@@ -1,0 +1,2723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0b0e17">
+  <title>Sophisticated Vocabulary Toolkit Quiz</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Tone.js for audio feedback -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+  <!-- Google Fonts: Inter & Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f6f7fb',
+              100: '#edf0f7',
+              500: '#6366f1',
+              600: '#4f46e5',
+              900: '#141829',
+              950: '#0b0e17',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background-color: #0b0e17;
+      color: #e2e8f0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      padding-bottom: env(safe-area-inset-bottom, 1rem);
+    }
+    .font-literary {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+    .glass-card {
+      background: rgba(22, 28, 48, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    input, textarea, select, button {
+      font-size: 16px;
+    }
+    @media (min-width: 640px) {
+      input, textarea, select {
+        font-size: 0.875rem;
+      }
+    }
+    button:active {
+      transform: scale(0.98);
+      transition: transform 0.08s ease;
+    }
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f1322;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #252e4d;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="selection:bg-indigo-500/30 selection:text-indigo-200 antialiased">
+  
+  <header class="border-b border-slate-800/90 sticky top-0 z-40 bg-[#0b0e17]/95 backdrop-blur-md pt-[env(safe-area-inset-top,0px)]">
+    <div class="max-w-lg mx-auto px-3.5 py-2.5 flex items-center justify-between gap-2">
+      <!-- Title & Branding -->
+      <div class="flex items-center space-x-2.5 min-w-0">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-indigo-600/30 text-sm font-bold shrink-0">
+          <i class="fa-solid fa-feather-pointed"></i>
+        </div>
+        <div class="min-w-0">
+          <h1 class="text-sm font-bold text-white truncate leading-tight flex items-center gap-1.5">
+            <span>Lexicon Mastery</span>
+            <span class="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/20">Parts 1 &amp; 2</span>
+          </h1>
+          <p class="text-[10px] text-slate-400 truncate">Emotions • Connotations • Idioms</p>
+        </div>
+      </div>
+
+      <!-- Stats Pill, Audio & Reference -->
+      <div class="flex items-center gap-1.5 shrink-0">
+        <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-[11px] font-semibold space-x-2">
+          <span class="text-amber-400">R<span id="statRound">1</span></span>
+          <span class="text-slate-700">|</span>
+          <span class="text-emerald-400"><span id="statScore">0</span>p</span>
+          <span class="text-slate-700">|</span>
+          <span class="text-indigo-400" id="statAccuracy">100%</span>
+        </div>
+
+        <button id="btnSoundToggle" onclick="toggleSound()" class="w-8 h-8 rounded-lg bg-slate-800/90 text-slate-300 flex items-center justify-center border border-slate-700 active:bg-slate-700" title="Toggle Sound" aria-label="Toggle Sound">
+          <i class="fa-solid fa-volume-high text-xs" id="soundIcon"></i>
+        </button>
+        
+        <button id="btnOpenReference" class="w-8 h-8 rounded-lg bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 flex items-center justify-center active:bg-indigo-600/30" title="Reference Guide" aria-label="Reference Guide">
+          <i class="fa-solid fa-book-bookmark text-xs"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-lg mx-auto px-3.5 py-3.5 space-y-3.5">
+    
+    <!-- Mobile Tab Segmented Switcher -->
+    <div class="p-1 rounded-xl bg-slate-900/90 border border-slate-800 grid grid-cols-3 gap-1">
+      <button onclick="switchPartTab(1)" id="tabPart1" class="py-2 px-1 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition bg-indigo-600 text-white shadow">
+        <span class="w-4 h-4 rounded-full bg-white/20 text-[9px] flex items-center justify-center font-bold">1</span>
+        <span class="truncate">Emotion</span>
+        <i id="badgeP1" class="fa-solid fa-check text-[10px] text-emerald-300 hidden"></i>
+      </button>
+      <button onclick="switchPartTab(2)" id="tabPart2" class="py-2 px-1 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition bg-transparent text-slate-400 hover:text-white">
+        <span class="w-4 h-4 rounded-full bg-slate-800 text-[9px] flex items-center justify-center font-bold">2</span>
+        <span class="truncate">Verb</span>
+        <i id="badgeP2" class="fa-solid fa-check text-[10px] text-emerald-300 hidden"></i>
+      </button>
+      <button onclick="switchPartTab(3)" id="tabPart3" class="py-2 px-1 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition bg-transparent text-slate-400 hover:text-white">
+        <span class="w-4 h-4 rounded-full bg-slate-800 text-[9px] flex items-center justify-center font-bold">3</span>
+        <span class="truncate">Idiom</span>
+        <i id="badgeP3" class="fa-solid fa-check text-[10px] text-emerald-300 hidden"></i>
+      </button>
+    </div>
+
+    <div id="quizContainer" class="space-y-3.5">
+
+      <section id="part1Section" class="glass-card rounded-2xl p-4 sm:p-5 border border-purple-500/20 shadow-lg">
+        <!-- Target Word Display & Header -->
+        <div class="pb-3 border-b border-slate-800">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase tracking-wide">Part 1 of 3</span>
+            <span class="text-[11px] text-slate-400">Intensity (1 to 5)</span>
+          </div>
+          <div class="mt-1 flex items-baseline justify-between">
+            <h2 class="text-xl sm:text-2xl font-bold font-literary text-white">
+              Synonym: <span id="p1WordDisplay" class="text-purple-400 underline decoration-purple-500/50 underline-offset-4 font-sans tracking-wide">...</span>
+            </h2>
+          </div>
+
+          <!-- Mobile Action Toolbar: Listen, Root, Prepositions, Example -->
+          <div class="flex flex-wrap gap-1.5 mt-2.5">
+            <button onclick="speakCurrentWord(1)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-slate-200 border border-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-volume-high text-purple-400 text-xs"></i>
+              <span>Listen</span>
+            </button>
+            <button id="btnHintP1" onclick="toggleHint(1)" class="px-2.5 py-1.5 rounded-lg bg-purple-500/15 text-xs font-medium text-purple-200 border border-purple-500/30 flex items-center gap-1.5">
+              <i class="fa-solid fa-eye text-xs" id="hintIconP1"></i>
+              <span id="hintContainerP1">Reveal Root</span>
+            </button>
+            <button id="btnPrepP1" onclick="togglePrepositions(1)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-amber-300 border border-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-link text-amber-400 text-xs"></i>
+              <span id="prepContainerP1">Prepositions</span>
+            </button>
+            <button id="btnExampleP1" onclick="toggleExample(1)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-slate-300 border border-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-quote-left text-purple-400 text-xs"></i>
+              <span id="exampleContainerP1">Example</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Optional Prepositions Reveal Box -->
+        <div id="prepBoxP1" class="hidden my-3 p-3 rounded-xl bg-amber-950/30 border border-amber-500/30 text-xs text-amber-200">
+          <span class="font-bold text-amber-300 block mb-1 text-[11px] flex items-center gap-1.5">
+            <i class="fa-solid fa-link text-[10px]"></i> Prepositions &amp; Collocations:
+          </span>
+          <span id="prepTextP1" class="font-medium">...</span>
+        </div>
+
+        <!-- Optional Example Box -->
+        <div id="exampleBoxP1" class="hidden my-3 p-3 rounded-xl bg-purple-950/30 border border-purple-500/30 text-xs italic text-purple-200">
+          <span class="font-bold text-purple-300 not-italic block mb-0.5 text-[11px]">Contextual Example:</span>
+          <span id="exampleTextP1">...</span>
+        </div>
+
+        <div class="space-y-3.5 mt-3.5">
+          <!-- 1.(a) Meaning -->
+          <div class="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800/80 transition" id="cardP1Meaning">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] flex items-center justify-center font-bold">a</span>
+                <span>What does <strong class="text-purple-300" id="labelP1Synonym1">[synonym]</strong> mean?</span>
+              </label>
+              <button type="button" onclick="toggleSkip('p1_meaning')" id="btnSkip_p1_meaning" class="px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition">
+                <i class="fa-solid fa-forward text-[9px]"></i>
+                <span>Skip</span>
+              </button>
+            </div>
+            <textarea id="inputP1Meaning" rows="2" class="w-full bg-slate-950/90 border border-slate-700/80 rounded-lg p-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition" placeholder="Explain the meaning and emotional nuance..."></textarea>
+            <div id="skipNotice_p1_meaning" class="hidden mt-1.5 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-forward-step text-[9px]"></i>
+              <span>Question skipped &bull; Canonical definition and model sentence will appear in results</span>
+            </div>
+          </div>
+
+          <!-- 1.(b) Intensity -->
+          <div class="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800/80 transition" id="cardP1Intensity">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] flex items-center justify-center font-bold">b</span>
+                <span>Level of intensity for <strong class="text-purple-300" id="labelP1Synonym2">[synonym]</strong>?</span>
+              </label>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 hidden sm:inline">1: Mild ➔ 5: Intense</span>
+                <button type="button" onclick="toggleSkip('p1_intensity')" id="btnSkip_p1_intensity" class="px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition">
+                  <i class="fa-solid fa-forward text-[9px]"></i>
+                  <span>Skip</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-5 gap-1.5" id="intensityButtonsContainer">
+              <button type="button" onclick="selectIntensity(1)" data-val="1" class="intensity-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">1</span>
+                <span class="text-[9px] text-slate-400 font-normal">Mild</span>
+              </button>
+              <button type="button" onclick="selectIntensity(2)" data-val="2" class="intensity-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">2</span>
+                <span class="text-[9px] text-slate-400 font-normal">Moderate</span>
+              </button>
+              <button type="button" onclick="selectIntensity(3)" data-val="3" class="intensity-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">3</span>
+                <span class="text-[9px] text-slate-400 font-normal">Marked</span>
+              </button>
+              <button type="button" onclick="selectIntensity(4)" data-val="4" class="intensity-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">4</span>
+                <span class="text-[9px] text-slate-400 font-normal">Elevated</span>
+              </button>
+              <button type="button" onclick="selectIntensity(5)" data-val="5" class="intensity-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">5</span>
+                <span class="text-[9px] text-slate-400 font-normal">Intense</span>
+              </button>
+            </div>
+            <input type="hidden" id="inputP1Intensity" value="">
+            <div id="skipNotice_p1_intensity" class="hidden mt-1.5 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-forward-step text-[9px]"></i>
+              <span>Intensity skipped &bull; Canonical rating revealed in results</span>
+            </div>
+          </div>
+
+          <!-- 1.(c) Sentence -->
+          <div class="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800/80 transition" id="cardP1Sentence">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] flex items-center justify-center font-bold">c</span>
+                <span>Use <strong class="text-purple-300" id="labelP1Synonym3">[synonym]</strong> in a sentence.</span>
+              </label>
+              <button type="button" onclick="toggleSkip('p1_sentence')" id="btnSkip_p1_sentence" class="px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition">
+                <i class="fa-solid fa-forward text-[9px]"></i>
+                <span>Skip</span>
+              </button>
+            </div>
+            <textarea id="inputP1Sentence" rows="2" class="w-full bg-slate-950/90 border border-slate-700/80 rounded-lg p-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition" placeholder="Write a sentence demonstrating this word's exact intensity..."></textarea>
+            <div id="skipNotice_p1_sentence" class="hidden mt-1.5 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-forward-step text-[9px]"></i>
+              <span>Sentence skipped &bull; Full model example sentence revealed in results</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-2 flex items-center justify-end">
+          <button onclick="goToNextPart(2)" class="w-full sm:w-auto px-4 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs flex items-center justify-center gap-2 shadow-md shadow-purple-600/30">
+            <span>Continue to Part 2: Verb</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <section id="part2Section" class="glass-card rounded-2xl p-4 sm:p-5 border border-blue-500/20 shadow-lg hidden">
+        <div class="pb-3 border-b border-slate-800">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 uppercase tracking-wide">Part 2 of 3</span>
+            <span class="text-[11px] text-slate-400">Connotation Spectrum</span>
+          </div>
+          <div class="mt-1 flex items-baseline justify-between">
+            <h2 class="text-xl sm:text-2xl font-bold font-literary text-white">
+              Verb: <span id="p2WordDisplay" class="text-blue-400 underline decoration-blue-500/50 underline-offset-4 font-sans tracking-wide">...</span>
+            </h2>
+          </div>
+
+          <!-- Mobile Action Toolbar: Listen, Plain Verb, Prepositions, Example -->
+          <div class="flex flex-wrap gap-1.5 mt-2.5">
+            <button onclick="speakCurrentWord(2)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-slate-200 border border-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-volume-high text-blue-400 text-xs"></i>
+              <span>Listen</span>
+            </button>
+            <button id="btnHintP2" onclick="toggleHint(2)" class="px-2.5 py-1.5 rounded-lg bg-blue-500/15 text-xs font-medium text-blue-200 border border-blue-500/30 flex items-center gap-1.5">
+              <i class="fa-solid fa-eye text-xs" id="hintIconP2"></i>
+              <span id="hintContainerP2">Reveal Plain Verb</span>
+            </button>
+            <button id="btnPrepP2" onclick="togglePrepositions(2)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-amber-300 border border-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-link text-amber-400 text-xs"></i>
+              <span id="prepContainerP2">Prepositions</span>
+            </button>
+            <button id="btnExampleP2" onclick="toggleExample(2)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-slate-300 border border-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-quote-left text-blue-400 text-xs"></i>
+              <span id="exampleContainerP2">Example</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Optional Prepositions Reveal Box -->
+        <div id="prepBoxP2" class="hidden my-3 p-3 rounded-xl bg-amber-950/30 border border-amber-500/30 text-xs text-amber-200">
+          <span class="font-bold text-amber-300 block mb-1 text-[11px] flex items-center gap-1.5">
+            <i class="fa-solid fa-link text-[10px]"></i> Prepositions &amp; Usage:
+          </span>
+          <span id="prepTextP2" class="font-medium">...</span>
+        </div>
+
+        <!-- Optional Example Box -->
+        <div id="exampleBoxP2" class="hidden my-3 p-3 rounded-xl bg-blue-950/30 border border-blue-500/30 text-xs italic text-blue-200">
+          <span class="font-bold text-blue-300 not-italic block mb-0.5 text-[11px]">Contextual Example:</span>
+          <span id="exampleTextP2">...</span>
+        </div>
+
+        <!-- Part 2 Questions: (a), (b), (c) -->
+        <div class="space-y-3.5 mt-3.5">
+          <!-- 2.(a) Meaning -->
+          <div class="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800/80 transition" id="cardP2Meaning">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] flex items-center justify-center font-bold">a</span>
+                <span>What does <strong class="text-blue-300" id="labelP2Synonym1">[synonym]</strong> mean?</span>
+              </label>
+              <button type="button" onclick="toggleSkip('p2_meaning')" id="btnSkip_p2_meaning" class="px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition">
+                <i class="fa-solid fa-forward text-[9px]"></i>
+                <span>Skip</span>
+              </button>
+            </div>
+            <textarea id="inputP2Meaning" rows="2" class="w-full bg-slate-950/90 border border-slate-700/80 rounded-lg p-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" placeholder="Explain what action this verb conveys and its nuance..."></textarea>
+            <div id="skipNotice_p2_meaning" class="hidden mt-1.5 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-forward-step text-[9px]"></i>
+              <span>Question skipped &bull; Canonical definition and model sentence will appear in results</span>
+            </div>
+          </div>
+
+          <!-- 2.(b) Connotation Spectrum (1 to 5) -->
+          <div class="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800/80 transition" id="cardP2Connotation">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] flex items-center justify-center font-bold">b</span>
+                <span>Connotation of <strong class="text-blue-300" id="labelP2SynonymConnotation">[synonym]</strong>?</span>
+              </label>
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] text-slate-400 hidden sm:inline">1: Neg ➔ 5: Pos</span>
+                <button type="button" onclick="toggleSkip('p2_connotation')" id="btnSkip_p2_connotation" class="px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition">
+                  <i class="fa-solid fa-forward text-[9px]"></i>
+                  <span>Skip</span>
+                </button>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-5 gap-1.5" id="connotationButtonsContainer">
+              <button type="button" onclick="selectConnotation(1)" data-cval="1" class="connotation-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">1</span>
+                <span class="text-[9px] text-rose-300 font-medium">Negative</span>
+              </button>
+              <button type="button" onclick="selectConnotation(2)" data-cval="2" class="connotation-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">2</span>
+                <span class="text-[9px] text-amber-300 font-medium">Unflatt.</span>
+              </button>
+              <button type="button" onclick="selectConnotation(3)" data-cval="3" class="connotation-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">3</span>
+                <span class="text-[9px] text-slate-300 font-medium">Neutral</span>
+              </button>
+              <button type="button" onclick="selectConnotation(4)" data-cval="4" class="connotation-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">4</span>
+                <span class="text-[9px] text-emerald-300 font-medium">Pleasant</span>
+              </button>
+              <button type="button" onclick="selectConnotation(5)" data-cval="5" class="connotation-btn py-2 px-1 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex flex-col items-center justify-center">
+                <span class="text-sm font-extrabold">5</span>
+                <span class="text-[9px] text-indigo-300 font-medium">Positive</span>
+              </button>
+            </div>
+            <input type="hidden" id="inputP2Connotation" value="">
+            <div id="skipNotice_p2_connotation" class="hidden mt-1.5 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-forward-step text-[9px]"></i>
+              <span>Connotation skipped &bull; Canonical placement revealed in results</span>
+            </div>
+          </div>
+
+          <!-- 2.(c) Sentence -->
+          <div class="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800/80 transition" id="cardP2Sentence">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] flex items-center justify-center font-bold">c</span>
+                <span>Use <strong class="text-blue-300" id="labelP2Synonym2">[synonym]</strong> in a sentence.</span>
+              </label>
+              <button type="button" onclick="toggleSkip('p2_sentence')" id="btnSkip_p2_sentence" class="px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition">
+                <i class="fa-solid fa-forward text-[9px]"></i>
+                <span>Skip</span>
+              </button>
+            </div>
+            <textarea id="inputP2Sentence" rows="2" class="w-full bg-slate-950/90 border border-slate-700/80 rounded-lg p-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" placeholder="Write a sentence where this verb is used naturally..."></textarea>
+            <div id="skipNotice_p2_sentence" class="hidden mt-1.5 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-forward-step text-[9px]"></i>
+              <span>Sentence skipped &bull; Model contextual sentence revealed in results</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-2 flex items-center gap-2">
+          <button onclick="goToNextPart(1)" class="w-1/3 py-3 rounded-xl bg-slate-800 text-slate-300 text-xs font-medium flex items-center justify-center gap-1">
+            <i class="fa-solid fa-arrow-left"></i> Part 1
+          </button>
+          <button onclick="goToNextPart(3)" class="w-2/3 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-blue-600/30">
+            <span>Continue to Part 3: Idiom</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+      </section>
+
+      <section id="part3Section" class="glass-card rounded-2xl p-4 sm:p-5 border border-amber-500/20 shadow-lg hidden">
+        <div class="pb-3 border-b border-slate-800">
+          <div class="flex items-center justify-between">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wide">Part 3 of 3</span>
+            <span class="text-[11px] text-slate-400" id="p3TierLabel">Idiom</span>
+          </div>
+          <div class="mt-1">
+            <h2 class="text-xl sm:text-2xl font-bold font-literary text-white leading-tight">
+              Idiom: <span id="p3WordDisplay" class="text-amber-400 underline decoration-amber-500/50 underline-offset-4 font-sans tracking-wide">...</span>
+            </h2>
+          </div>
+
+          <!-- Mobile Action Toolbar: Listen, Meaning, Example -->
+          <div class="flex flex-wrap gap-1.5 mt-2.5">
+            <button onclick="speakCurrentWord(3)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-slate-200 border border-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-volume-high text-amber-400 text-xs"></i>
+              <span>Listen</span>
+            </button>
+            <button id="btnHintP3" onclick="toggleHint(3)" class="px-2.5 py-1.5 rounded-lg bg-amber-500/15 text-xs font-medium text-amber-200 border border-amber-500/30 flex items-center gap-1.5">
+              <i class="fa-solid fa-eye text-xs" id="hintIconP3"></i>
+              <span id="hintContainerP3">Reveal Meaning</span>
+            </button>
+            <button id="btnExampleP3" onclick="toggleExample(3)" class="px-2.5 py-1.5 rounded-lg bg-slate-800 text-xs font-medium text-slate-300 border border-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-quote-left text-amber-400 text-xs"></i>
+              <span id="exampleContainerP3">Example</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Optional Example Box -->
+        <div id="exampleBoxP3" class="hidden my-3 p-3 rounded-xl bg-amber-950/30 border border-amber-500/30 text-xs italic text-amber-200">
+          <span class="font-bold text-amber-300 not-italic block mb-0.5 text-[11px]">Contextual Example:</span>
+          <span id="exampleTextP3">...</span>
+        </div>
+
+        <!-- Part 3 Questions: (a) and (b) -->
+        <div class="space-y-3.5 mt-3.5">
+          <!-- 3.(a) Meaning -->
+          <div class="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800/80 transition" id="cardP3Meaning">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] flex items-center justify-center font-bold">a</span>
+                <span>What does <strong class="text-amber-300" id="labelP3Idiom1">"[idiom]"</strong> mean?</span>
+              </label>
+              <button type="button" onclick="toggleSkip('p3_meaning')" id="btnSkip_p3_meaning" class="px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition">
+                <i class="fa-solid fa-forward text-[9px]"></i>
+                <span>Skip</span>
+              </button>
+            </div>
+            <textarea id="inputP3Meaning" rows="2" class="w-full bg-slate-950/90 border border-slate-700/80 rounded-lg p-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" placeholder="Explain the figurative meaning in plain language..."></textarea>
+            <div id="skipNotice_p3_meaning" class="hidden mt-1.5 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-forward-step text-[9px]"></i>
+              <span>Question skipped &bull; Figurative meaning and model sentence will appear in results</span>
+            </div>
+          </div>
+
+          <!-- 3.(b) Sentence -->
+          <div class="bg-slate-900/70 rounded-xl p-3.5 border border-slate-800/80 transition" id="cardP3Sentence">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] flex items-center justify-center font-bold">b</span>
+                <span>Use <strong class="text-amber-300" id="labelP3Idiom2">"[idiom]"</strong> in a sentence.</span>
+              </label>
+              <button type="button" onclick="toggleSkip('p3_sentence')" id="btnSkip_p3_sentence" class="px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition">
+                <i class="fa-solid fa-forward text-[9px]"></i>
+                <span>Skip</span>
+              </button>
+            </div>
+            <textarea id="inputP3Sentence" rows="2" class="w-full bg-slate-950/90 border border-slate-700/80 rounded-lg p-2.5 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition" placeholder="Write a natural sentence incorporating this idiom..."></textarea>
+            <div id="skipNotice_p3_sentence" class="hidden mt-1.5 p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-[10px] text-amber-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-forward-step text-[9px]"></i>
+              <span>Sentence skipped &bull; Model idiom sentence revealed in results</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 pt-3 border-t border-slate-800 flex flex-col gap-2.5">
+          <button id="btnSubmitRound" onclick="submitCurrentRound()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 via-indigo-600 to-purple-600 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>Submit Round &amp; Grade</span>
+          </button>
+          
+          <button onclick="goToNextPart(2)" class="w-full py-2.5 rounded-xl bg-slate-800/90 text-slate-300 text-xs font-medium flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-arrow-left"></i> Back to Part 2
+          </button>
+        </div>
+      </section>
+
+      <section id="resultsSection" class="glass-card rounded-2xl p-4 sm:p-5 border border-slate-700/80 shadow-2xl hidden">
+        <div class="pb-3 border-b border-slate-800 flex items-center justify-between">
+          <div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wide">Evaluation</span>
+            <h3 class="text-xl font-bold font-literary text-white mt-0.5">Round Performance</h3>
+          </div>
+          <span id="resultsScoreBadge" class="text-sm font-sans font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            Score: 92/100
+          </span>
+        </div>
+
+        <!-- Overall Feedback Box -->
+        <div class="my-3.5 p-3 rounded-xl bg-slate-900 border border-slate-700/80 flex items-start gap-2.5">
+          <i class="fa-solid fa-brain text-indigo-400 text-sm mt-0.5 shrink-0"></i>
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-300 block">Examiner Feedback</span>
+            <p id="resultsOverallFeedback" class="text-xs text-slate-300 mt-0.5 leading-relaxed">...</p>
+          </div>
+        </div>
+
+        <!-- Skipped Questions Summary Box -->
+        <div id="skippedQuestionsSection" class="hidden my-3.5 p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/30 space-y-2.5">
+          <div class="flex items-center justify-between border-b border-amber-500/20 pb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold text-xs">
+                <i class="fa-solid fa-forward-step"></i>
+              </span>
+              <div>
+                <h4 class="text-xs font-bold text-amber-200">Skipped Questions &mdash; Solutions &amp; Model Sentences</h4>
+                <p class="text-[10px] text-amber-300/80">Full canonical answers and sentences for learning</p>
+              </div>
+            </div>
+            <span id="skippedBadgeCount" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">0 Skipped</span>
+          </div>
+          <div id="skippedCardsContainer" class="space-y-2.5"></div>
+        </div>
+
+        <div class="space-y-4 my-3.5">
+          <!-- Part 1 Breakdown -->
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-purple-500/20 text-xs space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[10px] font-bold">Part 1</span>
+                <span class="font-bold text-white" id="resP1Word">Emotion</span>
+              </div>
+              <span id="scorePart1" class="font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[10px]">--%</span>
+            </div>
+
+            <!-- 1.(a) Meaning Review -->
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-purple-300 flex items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-purple-500/20 text-purple-300 text-[9px] flex items-center justify-center font-bold">a</span>
+                  <span>Meaning</span>
+                </span>
+                <button onclick="openAskAI('part1_meaning')" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                  <i class="fa-solid fa-sparkles text-[9px]"></i> Ask AI
+                </button>
+              </div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Your Answer:</span>
+                <p id="resP1UserMeaning" class="text-slate-200 mt-0.5 italic pl-2 border-l-2 border-slate-700">...</p>
+              </div>
+              <div id="resP1GrammarMeaning" class="hidden p-2 rounded bg-rose-950/30 border border-rose-500/30 text-[11px] text-rose-200"></div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Feedback:</span>
+                <p id="resP1MeaningFeedback" class="text-slate-300 mt-0.5">...</p>
+              </div>
+            </div>
+
+            <!-- 1.(b) Intensity Review -->
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-purple-300 flex items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-purple-500/20 text-purple-300 text-[9px] flex items-center justify-center font-bold">b</span>
+                  <span>Intensity Level (1-5)</span>
+                </span>
+                <button onclick="openAskAI('part1_intensity')" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                  <i class="fa-solid fa-sparkles text-[9px]"></i> Ask AI
+                </button>
+              </div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Your Selection:</span>
+                <div id="resP1UserIntensity" class="text-slate-200 mt-0.5 font-medium">...</div>
+              </div>
+              <div id="resP1IntensityResult" class="mt-0.5">...</div>
+            </div>
+
+            <!-- 1.(c) Sentence Review -->
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-purple-300 flex items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-purple-500/20 text-purple-300 text-[9px] flex items-center justify-center font-bold">c</span>
+                  <span>Sentence Usage</span>
+                </span>
+                <button onclick="openAskAI('part1_sentence')" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                  <i class="fa-solid fa-sparkles text-[9px]"></i> Ask AI
+                </button>
+              </div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Your Sentence:</span>
+                <p id="resP1UserSentence" class="text-slate-200 mt-0.5 italic pl-2 border-l-2 border-slate-700">...</p>
+              </div>
+              <div id="resP1GrammarSentence" class="hidden p-2 rounded bg-rose-950/30 border border-rose-500/30 text-[11px] text-rose-200"></div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Feedback:</span>
+                <p id="resP1SentenceFeedback" class="text-slate-300 mt-0.5">...</p>
+              </div>
+            </div>
+
+            <div id="resP1Reference" class="text-[10px] text-slate-400 pt-1 border-t border-slate-800/80"></div>
+          </div>
+
+          <!-- Part 2 Breakdown -->
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-blue-500/20 text-xs space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px] font-bold">Part 2</span>
+                <span class="font-bold text-white" id="resP2Word">Verb</span>
+              </div>
+              <span id="scorePart2" class="font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 text-[10px]">--%</span>
+            </div>
+
+            <!-- 2.(a) Meaning Review -->
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-blue-300 flex items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-blue-500/20 text-blue-300 text-[9px] flex items-center justify-center font-bold">a</span>
+                  <span>Meaning</span>
+                </span>
+                <button onclick="openAskAI('part2_meaning')" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                  <i class="fa-solid fa-sparkles text-[9px]"></i> Ask AI
+                </button>
+              </div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Your Answer:</span>
+                <p id="resP2UserMeaning" class="text-slate-200 mt-0.5 italic pl-2 border-l-2 border-slate-700">...</p>
+              </div>
+              <div id="resP2GrammarMeaning" class="hidden p-2 rounded bg-rose-950/30 border border-rose-500/30 text-[11px] text-rose-200"></div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Feedback:</span>
+                <p id="resP2MeaningFeedback" class="text-slate-300 mt-0.5">...</p>
+              </div>
+            </div>
+
+            <!-- 2.(b) Connotation Review -->
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-blue-300 flex items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-blue-500/20 text-blue-300 text-[9px] flex items-center justify-center font-bold">b</span>
+                  <span>Connotation (1-5)</span>
+                </span>
+                <button onclick="openAskAI('part2_connotation')" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                  <i class="fa-solid fa-sparkles text-[9px]"></i> Ask AI
+                </button>
+              </div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Your Selection:</span>
+                <div id="resP2UserConnotation" class="text-slate-200 mt-0.5 font-medium">...</div>
+              </div>
+              <div id="resP2ConnotationResult" class="mt-0.5">...</div>
+            </div>
+
+            <!-- 2.(c) Sentence Review -->
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-blue-300 flex items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-blue-500/20 text-blue-300 text-[9px] flex items-center justify-center font-bold">c</span>
+                  <span>Sentence Usage</span>
+                </span>
+                <button onclick="openAskAI('part2_sentence')" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                  <i class="fa-solid fa-sparkles text-[9px]"></i> Ask AI
+                </button>
+              </div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Your Sentence:</span>
+                <p id="resP2UserSentence" class="text-slate-200 mt-0.5 italic pl-2 border-l-2 border-slate-700">...</p>
+              </div>
+              <div id="resP2GrammarSentence" class="hidden p-2 rounded bg-rose-950/30 border border-rose-500/30 text-[11px] text-rose-200"></div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Feedback:</span>
+                <p id="resP2SentenceFeedback" class="text-slate-300 mt-0.5">...</p>
+              </div>
+            </div>
+
+            <div id="resP2Reference" class="text-[10px] text-slate-400 pt-1 border-t border-slate-800/80"></div>
+          </div>
+
+          <!-- Part 3 Breakdown -->
+          <div class="p-3.5 rounded-xl bg-slate-900/90 border border-amber-500/20 text-xs space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div class="flex items-center gap-2">
+                <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">Part 3</span>
+                <span class="font-bold text-white" id="resP3Word">Idiom</span>
+              </div>
+              <span id="scorePart3" class="font-bold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px]">--%</span>
+            </div>
+
+            <!-- 3.(a) Meaning Review -->
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-amber-300 flex items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-amber-500/20 text-amber-300 text-[9px] flex items-center justify-center font-bold">a</span>
+                  <span>Meaning</span>
+                </span>
+                <button onclick="openAskAI('part3_meaning')" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                  <i class="fa-solid fa-sparkles text-[9px]"></i> Ask AI
+                </button>
+              </div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Your Answer:</span>
+                <p id="resP3UserMeaning" class="text-slate-200 mt-0.5 italic pl-2 border-l-2 border-slate-700">...</p>
+              </div>
+              <div id="resP3GrammarMeaning" class="hidden p-2 rounded bg-rose-950/30 border border-rose-500/30 text-[11px] text-rose-200"></div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Feedback:</span>
+                <p id="resP3MeaningFeedback" class="text-slate-300 mt-0.5">...</p>
+              </div>
+            </div>
+
+            <!-- 3.(b) Sentence Review -->
+            <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800 space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-amber-300 flex items-center gap-1">
+                  <span class="w-4 h-4 rounded-full bg-amber-500/20 text-amber-300 text-[9px] flex items-center justify-center font-bold">b</span>
+                  <span>Sentence Usage</span>
+                </span>
+                <button onclick="openAskAI('part3_sentence')" class="text-[10px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                  <i class="fa-solid fa-sparkles text-[9px]"></i> Ask AI
+                </button>
+              </div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Your Sentence:</span>
+                <p id="resP3UserSentence" class="text-slate-200 mt-0.5 italic pl-2 border-l-2 border-slate-700">...</p>
+              </div>
+              <div id="resP3GrammarSentence" class="hidden p-2 rounded bg-rose-950/30 border border-rose-500/30 text-[11px] text-rose-200"></div>
+              <div>
+                <span class="text-[10px] font-semibold text-slate-400">Feedback:</span>
+                <p id="resP3SentenceFeedback" class="text-slate-300 mt-0.5">...</p>
+              </div>
+            </div>
+
+            <div id="resP3Reference" class="text-[10px] text-slate-400 pt-1 border-t border-slate-800/80"></div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-4 pt-3 border-t border-slate-800 flex flex-col gap-2">
+          <button onclick="startNewRound()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 flex items-center justify-center gap-2">
+            <span>Next Round</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button onclick="reviewAnswers()" class="w-full py-2.5 rounded-xl bg-slate-800 text-slate-300 text-xs font-medium flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-pen-to-square"></i> Review / Edit Answers
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <div id="referenceModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-[#121728] w-full max-w-lg max-h-[85vh] rounded-t-3xl sm:rounded-2xl flex flex-col overflow-hidden border-t sm:border border-slate-700 shadow-2xl">
+      <!-- Modal Header -->
+      <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-book-open text-indigo-400 text-sm"></i>
+          <h3 class="text-sm font-bold text-white">Vocabulary Toolkit Reference</h3>
+        </div>
+        <button onclick="closeReferenceModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <!-- Segment Tabs -->
+      <div class="px-3 py-2 bg-slate-950/80 border-b border-slate-800 flex gap-1.5 overflow-x-auto">
+        <button onclick="switchRefTab('emotions')" id="refTabEmotions" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white whitespace-nowrap">1. Emotions &amp; Traits</button>
+        <button onclick="switchRefTab('verbs')" id="refTabVerbs" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 whitespace-nowrap">2. Verbs &amp; Connotations</button>
+        <button onclick="switchRefTab('idioms')" id="refTabIdioms" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 whitespace-nowrap">3. Idioms (25 Total)</button>
+      </div>
+
+      <!-- Modal Content List -->
+      <div class="p-3.5 overflow-y-auto space-y-3.5 text-xs flex-1" id="referenceModalContent">
+        <!-- Emotions & Traits -->
+        <div id="refSectionEmotions" class="space-y-2.5">
+          <div class="text-[11px] text-slate-400 mb-1 flex items-center justify-between">
+            <span>8 Emotions &amp; 6 Mindset Traits</span>
+            <span class="text-amber-400 font-semibold">1 (Mild) ➔ 5 (Intense)</span>
+          </div>
+          <div class="space-y-2.5" id="refEmotionsContainer"></div>
+        </div>
+
+        <!-- Verbs -->
+        <div id="refSectionVerbs" class="space-y-2.5 hidden">
+          <div class="text-[11px] text-slate-400 mb-1">
+            <span>12 Verbs with 3 Sophisticated Alternatives &amp; 1-5 Connotation Spectra.</span>
+          </div>
+          <div class="space-y-2.5" id="refVerbsContainer"></div>
+        </div>
+
+        <!-- Idioms -->
+        <div id="refSectionIdioms" class="space-y-2 hidden">
+          <div class="text-[11px] text-slate-400 mb-1">
+            <span>15 Foundations + 10 C1-C2 Advanced Idioms.</span>
+          </div>
+          <div class="space-y-2" id="refIdiomsContainer"></div>
+        </div>
+      </div>
+
+      <!-- Close Button -->
+      <div class="p-3 bg-slate-900 border-t border-slate-800 flex justify-end">
+        <button onclick="closeReferenceModal()" class="w-full py-2.5 rounded-xl bg-slate-800 text-slate-200 text-xs font-semibold">
+          Close Reference
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Ask AI Tutor Modal -->
+  <div id="askAIModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-[#121728] w-full max-w-lg max-h-[88vh] rounded-t-3xl sm:rounded-2xl flex flex-col overflow-hidden border-t sm:border border-slate-700 shadow-2xl">
+      <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between bg-slate-900/90">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-lg bg-indigo-600/30 text-indigo-400 flex items-center justify-center text-xs">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <h3 class="text-sm font-bold text-white">Ask AI Vocabulary Tutor</h3>
+        </div>
+        <button onclick="closeAskAIModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <div class="p-3.5 overflow-y-auto space-y-3 flex-1 text-xs" id="askAIModalBody">
+        <!-- Question Context Pill -->
+        <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 block" id="askAIContextTag">Question Context</span>
+          <p class="text-white font-medium" id="askAIContextDetails">...</p>
+        </div>
+
+        <!-- Pre-set Suggested Prompt Chips -->
+        <div>
+          <span class="text-[10px] font-semibold text-slate-400 block mb-1.5">Suggested Questions:</span>
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="askAIPresetPrompt('Why was my answer marked down or how can I improve its nuance?')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-[11px] text-slate-300 border border-slate-700 hover:border-indigo-500/50 text-left">
+              💡 How can I improve my nuance?
+            </button>
+            <button onclick="askAIPresetPrompt('Explain the exact prepositions and grammatical collocations used with this word.')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-[11px] text-slate-300 border border-slate-700 hover:border-indigo-500/50 text-left">
+              🔗 Explain prepositions &amp; collocations
+            </button>
+            <button onclick="askAIPresetPrompt('Give me 2 natural C1/C2 sentences using this word in daily and formal writing.')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-[11px] text-slate-300 border border-slate-700 hover:border-indigo-500/50 text-left">
+              ✍️ Give me 2 natural C1/C2 sentences
+            </button>
+          </div>
+        </div>
+
+        <!-- AI Response Box -->
+        <div id="aiResponseContainer" class="hidden p-3 rounded-xl bg-indigo-950/30 border border-indigo-500/30 space-y-2">
+          <div class="flex items-center gap-2 text-indigo-300 font-bold text-xs">
+            <i class="fa-solid fa-sparkles"></i>
+            <span>Tutor Explanation:</span>
+          </div>
+          <p id="aiResponseText" class="text-slate-200 text-xs leading-relaxed whitespace-pre-wrap">...</p>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="aiLoadingIndicator" class="hidden py-4 flex items-center justify-center gap-2 text-xs text-indigo-300">
+          <i class="fa-solid fa-circle-notch animate-spin"></i>
+          <span>Consulting Lexicon Tutor...</span>
+        </div>
+      </div>
+
+      <!-- User Custom Query Input -->
+      <div class="p-3 bg-slate-900 border-t border-slate-800 flex items-center gap-2">
+        <input type="text" id="inputAskAIUserQuery" placeholder="Ask anything about this word..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+        <button onclick="submitCustomAIQuery()" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shrink-0 flex items-center gap-1.5 shadow-md shadow-indigo-600/30">
+          <span>Send</span>
+          <i class="fa-solid fa-paper-plane text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="evaluatingOverlay" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-[#121728] max-w-xs w-full p-6 rounded-2xl text-center flex flex-col items-center space-y-3.5 border border-indigo-500/30">
+      <div class="relative w-12 h-12 flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full border-3 border-indigo-500/20 border-t-indigo-500 animate-spin"></div>
+        <i class="fa-solid fa-feather text-indigo-400 text-base"></i>
+      </div>
+      <div>
+        <h4 class="text-base font-bold text-white">Grading Responses</h4>
+        <p class="text-[11px] text-slate-300 mt-1">Analyzing definitions, grammar, intensity, and connotations...</p>
+      </div>
+      <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+        <div class="bg-gradient-to-r from-amber-400 via-indigo-500 to-purple-500 h-full w-2/3 animate-pulse"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="fixed top-3 left-3 right-3 sm:left-auto sm:right-5 sm:top-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <script>
+    const VOCABULARY_TOOLKIT = {
+      emotionsAndTraits: [
+        {
+          category: "Emotion",
+          emotion: "Happiness",
+          levels: [
+            { level: 1, word: "Content", definition: "In a state of peaceful happiness; satisfied and at ease.", prepositions: "with (e.g., content with his simple lifestyle)", example: "Sitting on the porch with warm tea, he felt entirely content with his quiet evening." },
+            { level: 2, word: "Pleased", definition: "Feeling or showing pleasure and satisfaction; gratification.", prepositions: "with, about, by (e.g., pleased with the progress)", example: "The teacher was visibly pleased by how diligently the class prepared for the debate." },
+            { level: 3, word: "Delighted", definition: "Feeling or showing great pleasure, keen enjoyment, or delight.", prepositions: "with, by, at, to (e.g., delighted by the invitation)", example: "We were delighted to hear our childhood friend was visiting for the weekend." },
+            { level: 4, word: "Elated", definition: "Ecstatically happy; in high spirits and joyful triumph.", prepositions: "at, by, about (e.g., elated by the victory)", example: "The scientists were elated when their lunar rover successfully transmitted its first signals." },
+            { level: 5, word: "Euphoric", definition: "Characterized by intense, overwhelming excitement, elation, and happiness.", prepositions: "about, with, after (e.g., euphoric after the championship)", example: "Crossing the marathon finish line ahead of the pack left her in a euphoric daze." }
+          ]
+        },
+        {
+          category: "Emotion",
+          emotion: "Sadness",
+          levels: [
+            { level: 1, word: "Wistful", definition: "Having or showing a feeling of vague, gentle, or regretful longing.", prepositions: "about, for (e.g., wistful about childhood summers)", example: "She cast a wistful glance at the old family photograph album before packing it away." },
+            { level: 2, word: "Dejected", definition: "Sad and depressed; dispirited or downcast in spirits.", prepositions: "about, at, by (e.g., dejected by the loss)", example: "The dejected athlete slumped against the dugout bench after the sudden loss." },
+            { level: 3, word: "Despondent", definition: "In low spirits from loss of hope or courage; deeply discouraged.", prepositions: "about, over (e.g., despondent over job rejections)", example: "After months of rejected job applications, Marcus grew increasingly despondent." },
+            { level: 4, word: "Anguished", definition: "Experiencing or expressing severe mental suffering or agonizing grief.", prepositions: "over, about, at (e.g., anguished over the tragic news)", example: "An anguished cry broke the silence of the waiting room as the grim news arrived." },
+            { level: 5, word: "Devastated", definition: "Overwhelmed with utter shock, profound grief, or complete ruin of spirit.", prepositions: "by, at (e.g., devastated by the fire)", example: "The community was devastated when the historic library was reduced to ashes." }
+          ]
+        },
+        {
+          category: "Emotion",
+          emotion: "Anger",
+          levels: [
+            { level: 1, word: "Irritated", definition: "Showing or feeling slight anger, impatience, or annoyance.", prepositions: "by, at, with (e.g., irritated by the flickering lamp)", example: "He became irritated by the relentless hum of the flickering fluorescent light." },
+            { level: 2, word: "Indignant", definition: "Feeling or showing anger or annoyance at perceived unfairness or injustice.", prepositions: "at, about, over (e.g., indignant at the false accusation)", example: "Customers grew indignant when the airline canceled flights without explanation." },
+            { level: 3, word: "Incensed", definition: "Very angry; enraged; aroused to fiery wrath.", prepositions: "at, by, about (e.g., incensed at the policy change)", example: "Local residents were incensed by the council's decision to bulldoze the century-old park." },
+            { level: 4, word: "Livid", definition: "Furiously and intensely angry, often trembling or pale with rage.", prepositions: "with, at, about (e.g., livid with rage / at the delay)", example: "She was livid when she discovered her research had been plagiarized without citation." },
+            { level: 5, word: "Wrathful", definition: "Full of or characterized by intense, vengeful, and destructive fury.", prepositions: "towards, against, at (e.g., wrathful towards his rivals)", example: "The wrathful king banished every advisor who dared challenge his royal decree." }
+          ]
+        },
+        {
+          category: "Emotion",
+          emotion: "Fear",
+          levels: [
+            { level: 1, word: "Apprehensive", definition: "Anxious or uneasy that something unpleasant, harmful, or difficult will happen.", prepositions: "about, of (e.g., apprehensive about the flight)", example: "First-time travelers are often apprehensive before boarding long-haul international flights." },
+            { level: 2, word: "Anxious", definition: "Experiencing nervousness, worry, or unease about an uncertain outcome.", prepositions: "about, for (e.g., anxious about the diagnosis)", example: "He felt anxious about the medical test results scheduled to arrive Monday morning." },
+            { level: 3, word: "Alarmed", definition: "Frightened or acutely anxious that immediate danger or crisis is at hand.", prepositions: "by, at (e.g., alarmed by the smoke)", example: "Neighbors were alarmed to see thick black smoke billowing across the horizon." },
+            { level: 4, word: "Terrified", definition: "Filled with extreme, acute terror or violent dread.", prepositions: "of, by, at (e.g., terrified of heights)", example: "The toddler was terrified by the sudden clap of thunder during the summer storm." },
+            { level: 5, word: "Petrified", definition: "So overcome by fear that one is rendered rigid and paralyzed, unable to move or act.", prepositions: "of, with (e.g., petrified with fear / of bears)", example: "Frozen in headlights, the hiker stood petrified as the grizzly bear lumbered past." }
+          ]
+        },
+        {
+          category: "Emotion",
+          emotion: "Surprise",
+          levels: [
+            { level: 1, word: "Startled", definition: "Feeling sudden shock, alarm, or involuntary physical reaction to the unexpected.", prepositions: "by, at (e.g., startled by the knock)", example: "A sudden knock on the window startled everyone seated around the dinner table." },
+            { level: 2, word: "Astonished", definition: "Greatly surprised or impressed; struck with sudden wonder.", prepositions: "at, by (e.g., astonished at the discovery)", example: "The chess grandmaster looked astonished when the novice countered his attack flawlessly." },
+            { level: 3, word: "Amazed", definition: "Filled with great surprise, wonder, or fascination.", prepositions: "at, by (e.g., amazed by the architecture)", example: "Tourists were amazed by the intricate geometric carvings covering the ancient temple." },
+            { level: 4, word: "Astounded", definition: "Shocked and overcome with overwhelming surprise or disbelief.", prepositions: "at, by (e.g., astounded by his recovery)", example: "Doctors were astounded by how swiftly the patient made a full recovery." },
+            { level: 5, word: "Flabbergasted", definition: "Utterly astonished, dumbfounded, and completely speechless.", prepositions: "at, by (e.g., flabbergasted at the price)", example: "When the modest startup received a billion-dollar buyout offer, the founders were flabbergasted." }
+          ]
+        },
+        {
+          category: "Emotion",
+          emotion: "Disgust",
+          levels: [
+            { level: 1, word: "Averse", definition: "Having a strong dislike, disinclination, or opposition to something.", prepositions: "to (e.g., averse to taking needless risks)", example: "Though not fond of seafood, he was never entirely averse to trying freshly prepared sushi." },
+            { level: 2, word: "Repelled", definition: "Feeling strong distaste, aversion, or recoil away from something repulsive.", prepositions: "by (e.g., repelled by hypocrisy)", example: "She was repelled by the hypocritical rhetoric spewed during the political rally." },
+            { level: 3, word: "Revolted", definition: "Filled with intense disgust, stomach-turning distaste, or revulsion.", prepositions: "by, at (e.g., revolted by the cruelty)", example: "The pungent odor of rotting trash in the summer heat revolted passersby." },
+            { level: 4, word: "Repulsed", definition: "Violently driven back or intensely sickened by something offensive or repugnant.", prepositions: "by (e.g., repulsed by the decaying smell)", example: "He was repulsed by the cruelty inflicted upon stray animals in the abandoned lot." },
+            { level: 5, word: "Nauseated", definition: "Affected with visceral, physical sickness and overwhelming disgust.", prepositions: "by, with (e.g., nauseated by the fumes)", example: "The stench rising from the stagnant canal left the safety inspectors nauseated." }
+          ]
+        },
+        {
+          category: "Emotion",
+          emotion: "Love",
+          levels: [
+            { level: 1, word: "Fond", definition: "Having an affection, liking, or tender warmth toward someone or something.", prepositions: "of (e.g., fond of vintage poetry)", example: "He grew fond of the little bookstore on the corner and visited every Sunday." },
+            { level: 2, word: "Enamored", definition: "Be filled with love, admiration, or strong charm for someone.", prepositions: "with, of (e.g., enamored with Italian design)", example: "The young architect was completely enamored with classical Italian baroque facades." },
+            { level: 3, word: "Affectionate", definition: "Readily feeling, expressing, or demonstrating warmth, tenderness, and fond care.", prepositions: "towards, with (e.g., affectionate towards his siblings)", example: "The golden retriever was remarkably affectionate, resting its head on every visitor's knee." },
+            { level: 4, word: "Adoring", definition: "Feeling or expressing deep, devotional love, profound admiration, and honor.", prepositions: "of, towards (e.g., adoring of her mentor)", example: "The crowd turned adoring eyes toward the violinist as the final concerto note faded." },
+            { level: 5, word: "Besotted", definition: "Completely infatuated, head-over-heels, or blindly intoxicated with love.", prepositions: "with, by (e.g., besotted with her intellect)", example: "Besotted by her wit and charm, he could scarcely focus on his daily business affairs." }
+          ]
+        },
+        {
+          category: "Emotion",
+          emotion: "Excitement",
+          levels: [
+            { level: 1, word: "Eager", definition: "Wanting to do or have something very much; keen and enthusiastically impatient.", prepositions: "for, to, about (e.g., eager for updates)", example: "The children were eager to tear open their presents on holiday morning." },
+            { level: 2, word: "Enthusiastic", definition: "Showing intense, genuine enjoyment, active interest, or lively approval.", prepositions: "about (e.g., enthusiastic about the campaign)", example: "Her enthusiastic presentation convinced the board to invest in green energy." },
+            { level: 3, word: "Exhilarated", definition: "Feeling very happy, invigorated, energetic, and animated.", prepositions: "by (e.g., exhilarated by the mountain air)", example: "Sailing through whitecapped coastal waters left the crew feeling thoroughly exhilarated." },
+            { level: 4, word: "Thrilled", definition: "Experiencing a sudden wave of keen excitement, intense pleasure, and electrifying delight.", prepositions: "with, about, by, at (e.g., thrilled with the reception)", example: "The soprano was thrilled to receive a standing ovation from the packed auditorium." },
+            { level: 5, word: "Ecstatic", definition: "Feeling overwhelming, ecstatic rapture and rapturous joy.", prepositions: "about, at, over (e.g., ecstatic about the news)", example: "Fans became ecstatic when their home team scored the winning goal in stoppage time." }
+          ]
+        },
+        // Character & Mindset Traits
+        {
+          category: "Character & Mindset",
+          emotion: "Bravery",
+          levels: [
+            { level: 1, word: "Plucky", definition: "Having or showing determined courage in the face of difficulties; spirited.", prepositions: "in, about (e.g., plucky in adversity)", example: "The plucky underdog challenger refused to concede even when down three points." },
+            { level: 2, word: "Bold", definition: "Willing to meet danger or take risks; confident and daring.", prepositions: "in, with (e.g., bold in her strategic vision)", example: "She made a bold career move by launching an independent design studio during a recession." },
+            { level: 3, word: "Brave", definition: "Ready to face and endure danger, adversity, or pain; showing courage.", prepositions: "against, in, before (e.g., brave against the onslaught)", example: "Brave firefighters entered the burning high-rise to search for trapped residents." },
+            { level: 4, word: "Valiant", definition: "Possessing or showing great valor, heroism, and noble courage.", prepositions: "in, against (e.g., valiant in defense of the fortress)", example: "Despite overwhelming odds, the regiment put up a valiant defense of the mountain pass." },
+            { level: 5, word: "Intrepid", definition: "Fearless and resolutely adventurous; enduring peril or hardship without trembling.", prepositions: "in, during (e.g., intrepid in the Antarctic wilderness)", example: "Intrepid explorers braved sub-zero Antarctic blizzards to chart unexplored glaciers." }
+          ]
+        },
+        {
+          category: "Character & Mindset",
+          emotion: "Confusion",
+          levels: [
+            { level: 1, word: "Puzzled", definition: "Unable to understand; somewhat perplexed or slightly baffled.", prepositions: "by, about, over (e.g., puzzled by the missing data)", example: "The detective looked puzzled when the suspect's alibi matched store surveillance tapes." },
+            { level: 2, word: "Perplexed", definition: "Completely baffled or puzzled by something complicated, contradictory, or intricate.", prepositions: "by, at (e.g., perplexed by the conflicting results)", example: "Engineers were perplexed by the erratic electrical readings coming from the sensor." },
+            { level: 3, word: "Bewildered", definition: "Perplexed and confused; thoroughly disoriented by unexpected developments.", prepositions: "by (e.g., bewildered by the maze of streets)", example: "Jet-lagged tourists wandered through the labyrinthine alleyways, looking thoroughly bewildered." },
+            { level: 4, word: "Baffled", definition: "Totally bewildered, stumped, or unable to comprehend or solve a problem.", prepositions: "by (e.g., baffled by the rare symptoms)", example: "Medical specialists were baffled by the sudden appearance of the mysterious rash." },
+            { level: 5, word: "Disoriented", definition: "Having lost one's sense of direction, mental bearings, or situational clarity.", prepositions: "by, in (e.g., disoriented by the thick smoke)", example: "Emerging from the smoke-filled subway tunnel, commuters felt dizzy and completely disoriented." }
+          ]
+        },
+        {
+          category: "Character & Mindset",
+          emotion: "Certainty",
+          levels: [
+            { level: 1, word: "Assured", definition: "Confident and secure in one's mind; calm and free from doubt.", prepositions: "of, in, about (e.g., assured of final triumph)", example: "With calm, assured gestures, the surgeon walked the anxious family through the procedure." },
+            { level: 2, word: "Confident", definition: "Feeling or showing certainty about something or one's own capabilities.", prepositions: "in, of, about (e.g., confident in her preparation)", example: "She felt confident her thorough preparation would shine during the panel interview." },
+            { level: 3, word: "Convinced", definition: "Completely persuaded and believing firmly that something is true or right.", prepositions: "of, by (e.g., convinced of his innocence)", example: "After examining the fossil samples under the microscope, the geologist was convinced of their age." },
+            { level: 4, word: "Certain", definition: "Known to be true beyond doubt; completely positive and resolute.", prepositions: "of, about (e.g., certain of the astronomical trajectory)", example: "The astronomer was certain that the observed anomaly was an interstellar comet." },
+            { level: 5, word: "Unequivocal", definition: "Leaving no doubt whatsoever; completely clear, unambiguous, and absolute.", prepositions: "in, about (e.g., unequivocal in condemning corruption)", example: "The prime minister issued an unequivocal condemnation of the treaty violations." }
+          ]
+        },
+        {
+          category: "Character & Mindset",
+          emotion: "Curiosity",
+          levels: [
+            { level: 1, word: "Interested", definition: "Showing curiosity or concern about something; having one's attention engaged.", prepositions: "in (e.g., interested in rare manuscripts)", example: "Several collectors were interested in the rare first-edition manuscript on display." },
+            { level: 2, word: "Inquisitive", definition: "Eager to investigate, learn, or ask probing questions; actively curious.", prepositions: "about (e.g., inquisitive about accounting gaps)", example: "Her inquisitive nature led her to probe deeper into the accounting irregularities." },
+            { level: 3, word: "Intrigued", definition: "Aroused with keen curiosity or fascination by something mysterious or novel.", prepositions: "by (e.g., intrigued by subterranean ruins)", example: "Archaeologists were intrigued by the unexplained subterranean chambers discovered beneath the courtyard." },
+            { level: 4, word: "Fascinated", definition: "Strongly attracted, captivated, and deeply interested.", prepositions: "by, with (e.g., fascinated by molten glassblowing)", example: "The child sat fascinated as the glassblower transformed molten sand into a delicate vase." },
+            { level: 5, word: "Enthralled", definition: "Captured entirely by wonder; held spellbound and enchanted by curiosity.", prepositions: "by, with (e.g., enthralled by the explorer's stories)", example: "The audience was enthralled by the explorer's harrowing accounts of deep-sea trenches." }
+          ]
+        },
+        {
+          category: "Character & Mindset",
+          emotion: "Trust",
+          levels: [
+            { level: 1, word: "Confiding", definition: "Willing to trust and share private thoughts; showing open faith.", prepositions: "in, with (e.g., confiding in her trusted mentor)", example: "In a quiet, confiding whisper, she shared her childhood aspirations with her mentor." },
+            { level: 2, word: "Trusting", definition: "Inclined to believe in and rely upon the honesty or goodwill of others.", prepositions: "of, in (e.g., trusting of unfamiliar associates)", example: "His trusting disposition made him beloved by colleagues, though occasionally vulnerable." },
+            { level: 3, word: "Reliant", definition: "Having confidence in and depending steadily upon someone or something.", prepositions: "on, upon (e.g., reliant upon mountain sherpas)", example: "The expedition team remained heavily reliant on their experienced mountain guide." },
+            { level: 4, word: "Faithful", definition: "Steadfast in affection, loyalty, and unswerving adherence to trust.", prepositions: "to (e.g., faithful to sworn treaties)", example: "Throughout years of political exile, he maintained a faithful circle of supporters." },
+            { level: 5, word: "Devoted", definition: "Very loving, loyal, and unreservedly dedicated with profound commitment.", prepositions: "to (e.g., devoted to patient dignity)", example: "The nurse was fiercely devoted to ensuring every hospice patient experienced dignity." }
+          ]
+        },
+        {
+          category: "Character & Mindset",
+          emotion: "Distrust",
+          levels: [
+            { level: 1, word: "Wary", definition: "Feeling or showing cautious circumspection about possible dangers or deception.", prepositions: "of (e.g., wary of unproven investments)", example: "The investor remained wary of speculative startups promising unrealistic overnight returns." },
+            { level: 2, word: "Skeptical", definition: "Not easily convinced; possessing deep doubts or critical reservations.", prepositions: "about, of (e.g., skeptical of laboratory claims)", example: "The review panel was skeptical of the uncorroborated laboratory data." },
+            { level: 3, word: "Suspicious", definition: "Having or showing a cautious distrust or apprehension about someone or something.", prepositions: "of, about (e.g., suspicious of the lone package)", example: "Security guards grew suspicious when an unattended briefcase remained in the lobby." },
+            { level: 4, word: "Distrustful", definition: "Feeling or showing profound lack of trust, skepticism, and doubt.", prepositions: "of, towards (e.g., distrustful of corporate assurances)", example: "Burned by previous corporate betrayals, the union representatives were deeply distrustful." },
+            { level: 5, word: "Paranoid", definition: "Suffering from extreme, irrational distrust, suspicion, or fear of conspiracy.", prepositions: "about (e.g., paranoid about electronic surveillance)", example: "He grew increasingly paranoid, suspecting his closest friends were leaking his private journals." }
+          ]
+        }
+      ],
+
+      verbs: [
+        {
+          verb: "Walk",
+          elevated: [
+            { word: "Amble", definition: "Walk or move at a slow, relaxed, leisurely pace." },
+            { word: "Saunter", definition: "Walk in a slow, relaxed manner without hurry or effort." },
+            { word: "Traverse", definition: "Travel across or through an area with deliberate purpose." }
+          ],
+          connotations: [
+            { level: 1, word: "Trudge", label: "Negative", prepositions: "through, across, up (e.g., trudge through heavy snow)", definition: "To walk slowly and with heavy, labored steps, typically from exhaustion or reluctance.", example: "After the bus broke down, commuters had to trudge three miles through muddy freezing rain." },
+            { level: 2, word: "Shuffle", label: "Unflattering", prepositions: "along, across, into (e.g., shuffle along the hallway)", definition: "To walk dragging one's feet along the ground without lifting them properly.", example: "He shuffled reluctantly toward the principal's office with his hands stuffed deep in his pockets." },
+            { level: 3, word: "Amble", label: "Neutral", prepositions: "along, through, down (e.g., amble along the riverside)", definition: "To walk or move at a slow, leisurely, and relaxed pace.", example: "They ambled through the quiet morning market, inspecting seasonal fruits and fresh bread." },
+            { level: 4, word: "Stroll", label: "Pleasant", prepositions: "through, along, around (e.g., stroll through the botanical garden)", definition: "To walk in a leisurely, relaxed, and agreeable way for enjoyment.", example: "In the cool evening air, tourists strolled along the riverbank watching the sun dip beneath the skyline." },
+            { level: 5, word: "Glide", label: "Positive", prepositions: "across, over, along (e.g., glide across the parquet floor)", definition: "To move smoothly, continuously, and gracefully with seemingly effortless poise.", example: "The prima ballerina seemed to glide across the stage as though floating on air." }
+          ]
+        },
+        {
+          verb: "Run",
+          elevated: [
+            { word: "Sprint", definition: "Run at full speed over a short distance with athletic drive." },
+            { word: "Dash", definition: "Run or travel somewhere in a great, urgent hurry." },
+            { word: "Bolt", definition: "Run away suddenly and rapidly, often in surprise or alarm." }
+          ],
+          connotations: [
+            { level: 1, word: "Flee", label: "Negative", prepositions: "from, into, towards (e.g., flee from the wildfires)", definition: "To run away from danger, pursuit, or an unpleasant situation.", example: "Villagers had to flee into the surrounding hills as wildfires encroached on the settlement." },
+            { level: 2, word: "Scurry", label: "Unflattering", prepositions: "across, under, into (e.g., scurry under floorboards)", definition: "To move hurriedly with quick, short, agitated steps.", example: "Mice scurried beneath the pantry floorboards the instant the kitchen light switched on." },
+            { level: 3, word: "Jog", label: "Neutral", prepositions: "around, along, through (e.g., jog around the community park)", definition: "To run at a steady, gentle, rhythmic pace.", example: "He jogs around the neighborhood park every weekday morning before heading to the office." },
+            { level: 4, word: "Sprint", label: "Pleasant", prepositions: "towards, for, across (e.g., sprint towards the finish line)", definition: "To run at full, concentrated speed with athletic drive.", example: "The striker managed to sprint past the defenders to catch the long pass before the boundary." },
+            { level: 5, word: "Bound", label: "Positive", prepositions: "across, over, into (e.g., bound across the meadow)", definition: "To run with vigorous, buoyant, exuberant leaping strides.", example: "The energetic golden retriever bounded across the grassy meadow to fetch the thrown stick." }
+          ]
+        },
+        {
+          verb: "See",
+          elevated: [
+            { word: "Observe", definition: "Watch attentively, thoughtfully noting salient details." },
+            { word: "Perceive", definition: "Become aware or conscious of something through visual observation." },
+            { word: "Discern", definition: "Distinguish, recognize, or identify clearly with keen insight." }
+          ],
+          connotations: [
+            { level: 1, word: "Gawk", label: "Negative", prepositions: "at (e.g., gawk at the collision)", definition: "To stare openly, stupidly, or rudely in vulgar fascination.", example: "Bystanders gawked at the fender-bender on the highway, causing massive traffic delays." },
+            { level: 2, word: "Glare", label: "Unflattering", prepositions: "at, towards (e.g., glare at the rival coach)", definition: "To stare with a fierce, piercing, hostile anger.", example: "The rival coach glared across the court after the contentious referee call." },
+            { level: 3, word: "Glimpse", label: "Neutral", prepositions: "through, at (e.g., glimpse through the trees)", definition: "To see or perceive momentarily or partially.", example: "Through the dense forest foliage, we caught a momentary glimpse of a deer leaping over a stream." },
+            { level: 4, word: "Observe", label: "Pleasant", prepositions: "from, with (e.g., observe from orbital satellites)", definition: "To watch attentively, thoughtfully noting salient details.", example: "Astronomers observe the trajectory of asteroids using high-powered orbital observatories." },
+            { level: 5, word: "Behold", label: "Positive", prepositions: "with, in (e.g., behold with awe)", definition: "To gaze upon something with reverent wonder, awe, or profound admiration.", example: "Standing upon the ridge, the hikers paused to behold the majesty of the sunlit canyon below." }
+          ]
+        },
+        {
+          verb: "Hear",
+          elevated: [
+            { word: "Perceive", definition: "Become aware of acoustic sound through the hearing faculty." },
+            { word: "Detect", definition: "Discover or register the subtle presence of an acoustic signal." },
+            { word: "Apprehend", definition: "Understand or grasp the meaning of heard speech or signal." }
+          ],
+          connotations: [
+            { level: 1, word: "Eavesdrop", label: "Negative", prepositions: "on (e.g., eavesdrop on private calls)", definition: "To secretly listen to a private conversation without consent.", example: "It is ill-mannered to eavesdrop on confidential discussions held in coffee shops." },
+            { level: 2, word: "Overhear", label: "Unflattering", prepositions: "from, in (e.g., overhear in the corridor)", definition: "To hear someone or something without intention or their knowledge.", example: "Sitting in the train car, I could not help but overhear their conversation about the merger." },
+            { level: 3, word: "Detect", label: "Neutral", prepositions: "in, from (e.g., detect faint acoustic signals in the trench)", definition: "To discover or determine the subtle presence of an acoustic signal.", example: "The sonar equipment detected faint rhythmic vibrations emanating from the deep trench." },
+            { level: 4, word: "Heed", label: "Pleasant", prepositions: "direct object, or from (e.g., heed warnings from officials)", definition: "To listen closely and pay serious, respectful attention to advice or words.", example: "Drivers should heed severe weather advisories and avoid traveling across mountain passes." },
+            { level: 5, word: "Hearken", label: "Positive", prepositions: "to, unto (e.g., hearken to the wisdom of elders)", definition: "To listen attentively with earnest reverence, wisdom, and compliance.", example: "The citizens gathered in the plaza to hearken to the inspirational words of the venerable philosopher." }
+          ]
+        },
+        {
+          verb: "Jump",
+          elevated: [
+            { word: "Leap", definition: "Spring forcefully and gracefully through the air across distance." },
+            { word: "Vault", definition: "Leap over an obstacle with the aid of support, a pole, or sudden vigor." },
+            { word: "Bound", definition: "Leap forward with buoyant energy and athletic poise." }
+          ],
+          connotations: [
+            { level: 1, word: "Recoil", label: "Negative", prepositions: "from, in (e.g., recoil from the swamp creature in horror)", definition: "To spring back or flinch suddenly in fear, horror, or disgust.", example: "He recoiled in disgust when the slimy creature brushed against his ankle in the swamp." },
+            { level: 2, word: "Flinch", label: "Unflattering", prepositions: "at, from (e.g., flinch at the sudden noise)", definition: "To make a quick, nervous movement or jump back in anticipated pain or surprise.", example: "She did not flinch even when the ball zipped past inches from her face." },
+            { level: 3, word: "Hop", label: "Neutral", prepositions: "along, over, across (e.g., hop along the fence line)", definition: "To make a short, light jump or springing movement.", example: "The robin hopped lightly along the garden fence in search of earthworms." },
+            { level: 4, word: "Leap", label: "Pleasant", prepositions: "across, over, into (e.g., leap across the crevasse)", definition: "To spring gracefully and powerfully through the air across distance.", example: "The mountain goat leaped effortlessly across the precipitous rocky crevasse." },
+            { level: 5, word: "Bound", label: "Positive", prepositions: "onto, across, into (e.g., bound onto the illuminated stage)", definition: "To leap forward with buoyant energy, vitality, and joyful athletic grace.", example: "With irrepressible joy, the dancers bounded onto the illuminated festival stage." }
+          ]
+        },
+        {
+          verb: "Eat",
+          elevated: [
+            { word: "Consume", definition: "Eat or drink food as nourishment or fuel." },
+            { word: "Devour", definition: "Eat hungrily, eagerly, and voraciously." },
+            { word: "Ingest", definition: "Take food, drink, or another substance into the body by swallowing." }
+          ],
+          connotations: [
+            { level: 1, word: "Gorge", label: "Negative", prepositions: "on (e.g., gorge on processed sweets)", definition: "To eat greedily, gluttonously, and excessively to uncomfortable fullness.", example: "It is unhealthy to gorge on sugary sweets right before going to sleep." },
+            { level: 2, word: "Devour", label: "Unflattering", prepositions: "direct object or with (e.g., devour with haste)", definition: "To eat hungrily, hurriedly, and ravenously.", example: "After hiking twenty miles with no lunch, they devoured the pizza in ten minutes flat." },
+            { level: 3, word: "Consume", label: "Neutral", prepositions: "direct object (e.g., consume complex carbohydrates)", definition: "To eat or drink food as necessary nourishment.", example: "Athletes need to consume balanced carbohydrates and lean proteins to replenish glycogen." },
+            { level: 4, word: "Savor", label: "Pleasant", prepositions: "direct object or of (e.g., savor every nuance of the vintage wine)", definition: "To taste or eat with slow, deliberate enjoyment and appreciation.", example: "She took small bites to savor the complex flavors of the artisanal dark chocolate truffle." },
+            { level: 5, word: "Relish", label: "Positive", prepositions: "in, direct object (e.g., relish the culinary heritage)", definition: "To take keen, delighted pleasure in tasting and enjoying fine food.", example: "Epicures around the world relish the seasonal delicacy of freshly shaved white truffles." }
+          ]
+        },
+        {
+          verb: "Sleep",
+          elevated: [
+            { word: "Slumber", definition: "Sleep gently, deeply, and tranquilly." },
+            { word: "Repose", definition: "Rest in serene, tranquil, and dignified calm." },
+            { word: "Drowse", definition: "Be half-asleep or doze lightly in a peaceful state." }
+          ],
+          connotations: [
+            { level: 1, word: "Pass out", label: "Negative", prepositions: "on, in, from (e.g., pass out from acute exhaustion)", definition: "To fall into a sudden, ungraceful state of unconsciousness or exhausted stupor.", example: "Exhausted from working two back-to-back shifts, he passed out on the sofa in his uniform." },
+            { level: 2, word: "Doze off", label: "Unflattering", prepositions: "during, in (e.g., doze off during the presentation)", definition: "To unintentionally fall lightly asleep at an inconvenient or awkward moment.", example: "The professor noticed several students doze off during the monotonous three-hour lecture." },
+            { level: 3, word: "Rest", label: "Neutral", prepositions: "in, on, against (e.g., rest quietly for an hour)", definition: "To relax, cease exertion, and refresh oneself in peaceful quiet.", example: "The doctor advised her to rest quietly for twenty minutes after taking the prescribed medication." },
+            { level: 4, word: "Slumber", label: "Pleasant", prepositions: "in, through (e.g., slumber peacefully through the storm)", definition: "To sleep gently, deeply, and securely in tranquil repose.", example: "The newborn slumbered peacefully in her crib, undisturbed by the summer thunderstorm outside." },
+            { level: 5, word: "Repose", label: "Positive", prepositions: "in, upon (e.g., repose in solemn stone crypts)", definition: "To rest in serene, harmonious, and refined tranquility.", example: "In the quiet marble sanctuary, monuments of ancient kings repose in solemn dignity." }
+          ]
+        },
+        {
+          verb: "Talk",
+          elevated: [
+            { word: "Converse", definition: "Engage in meaningful, intelligent dialogue." },
+            { word: "Articulate", definition: "Express ideas clearly, eloquently, and distinctly in speech." },
+            { word: "Discourse", definition: "Speak authoritatively and at length on a given subject." }
+          ],
+          connotations: [
+            { level: 1, word: "Rant", label: "Negative", prepositions: "about, at, against (e.g., rant against bureaucracy)", definition: "To speak in an angry, impassioned, aggressive, or incoherent manner.", example: "The disgruntled customer began to rant at the counter staff over a minor pricing mistake." },
+            { level: 2, word: "Prattle", label: "Unflattering", prepositions: "on, about (e.g., prattle on about gossip)", definition: "To talk at length in a foolish, trivial, or inconsequential way.", example: "Instead of focusing on the agenda, he prattled on about his weekend golfing exploits." },
+            { level: 3, word: "Chat", label: "Neutral", prepositions: "with, to, about (e.g., chat with old classmates)", definition: "To talk in a friendly, informal, and familiar manner.", example: "Old classmates sat at the bistro terrace to chat and reminisce about university days." },
+            { level: 4, word: "Converse", label: "Pleasant", prepositions: "with, on, about (e.g., converse with philosophers on ethics)", definition: "To engage in meaningful, intelligent dialogue and reciprocal exchange of thoughts.", example: "Philosophers gathered at the symposium to converse on ethics, art, and modern governance." },
+            { level: 5, word: "Confide", label: "Positive", prepositions: "in, to (e.g., confide in her grandmother)", definition: "To speak privately, sharing innermost secrets, feelings, or trust.", example: "Feeling vulnerable, she confided her deepest hopes and anxieties to her grandmother." }
+          ]
+        },
+        {
+          verb: "Think",
+          elevated: [
+            { word: "Contemplate", definition: "Meditate deeply and look thoughtfully upon concepts." },
+            { word: "Ponder", definition: "Weigh and reflect deeply on a question or circumstance." },
+            { word: "Deliberate", definition: "Weigh considerations carefully and thoroughly before deciding." }
+          ],
+          connotations: [
+            { level: 1, word: "Fret", label: "Negative", prepositions: "about, over (e.g., fret over minor errors)", definition: "To worry anxiously and nervously, agitating one's mind repeatedly.", example: "There is no use fretting over circumstances completely outside your personal control." },
+            { level: 2, word: "Brood", label: "Unflattering", prepositions: "over, on, about (e.g., brood over an insult)", definition: "To dwell persistently and moodily on unhappy, resentful, or distressing thoughts.", example: "Rather than fixing the mistake, he chose to brood silently in his office all afternoon." },
+            { level: 3, word: "Consider", label: "Neutral", prepositions: "direct object or with (e.g., consider every consequence)", definition: "To think carefully about something, weighing facts or choices.", example: "Before accepting the overseas transfer, take time to consider the impact on your family." },
+            { level: 4, word: "Contemplate", label: "Pleasant", prepositions: "direct object or on (e.g., contemplate the coastal horizon)", definition: "To meditate deeply and look thoughtfully upon philosophical ideas or possibilities.", example: "He walked alone beside the sea to contemplate the major life decision before him." },
+            { level: 5, word: "Reflect", label: "Positive", prepositions: "on, upon (e.g., reflect on the lessons learned)", definition: "To engage in profound, mature introspection, wisdom, and intellectual examination.", example: "At the end of every quarter, executive leaders pause to reflect on lessons learned." }
+          ]
+        },
+        {
+          verb: "Laugh",
+          elevated: [
+            { word: "Chuckle", definition: "Laugh quietly with inward amusement." },
+            { word: "Guffaw", definition: "Laugh loudly, boisterously, and heartily." },
+            { word: "Chortle", definition: "Laugh in a breathy, gleeful, chuckling way." }
+          ],
+          connotations: [
+            { level: 1, word: "Snicker", label: "Negative", prepositions: "at, behind (e.g., snicker at someone's stumble)", definition: "To give a smothered, disrespectful, malicious, or sneaky laugh.", example: "Unruly teenagers in the back row began to snicker when the speaker mispronounced a word." },
+            { level: 2, word: "Cackle", label: "Unflattering", prepositions: "at, with (e.g., cackle with villainous glee)", definition: "To laugh in a harsh, shrill, sharp, or mocking manner.", example: "The theatrical villain threw back his cloak and let out a shrill cackle." },
+            { level: 3, word: "Chuckle", label: "Neutral", prepositions: "at, to (e.g., chuckle at the comic strip)", definition: "To laugh quietly and mildly with quiet amusement.", example: "He couldn't help but chuckle at the cartoon strip published in the morning paper." },
+            { level: 4, word: "Giggle", label: "Pleasant", prepositions: "at, about (e.g., giggle around the campfire)", definition: "To laugh lightly in an amused, silly, or youthful, lighthearted way.", example: "Young campers giggled around the bonfire while sharing amusing ghost stories." },
+            { level: 5, word: "Guffaw", label: "Positive", prepositions: "at, with (e.g., guffaw at the comedian's punchline)", definition: "To laugh boisterously, loudly, and heartily with contagious joy.", example: "The comedian delivered such a witty punchline that the entire hall erupted into hearty guffaws." }
+          ]
+        },
+        {
+          verb: "Cry",
+          elevated: [
+            { word: "Weep", definition: "Shed tears quietly as an expression of sorrow or tender emotion." },
+            { word: "Sob", definition: "Weep noisily with convulsive gasps for breath." },
+            { word: "Lament", definition: "Express passionate grief, mourning, or sorrow." }
+          ],
+          connotations: [
+            { level: 1, word: "Wail", label: "Negative", prepositions: "in, with, over (e.g., wail in grief over the loss)", definition: "To cry out with prolonged, high-pitched, piercing lamentations or complaint.", example: "Sirens wailed in the distance as emergency responders raced toward the collision." },
+            { level: 2, word: "Sob", label: "Unflattering", prepositions: "into, with, over (e.g., sob into a pillow)", definition: "To weep noisily, gasping convulsively for breath.", example: "Heartbroken by the sudden goodbye, the child sobbed uncontrollably into his pillow." },
+            { level: 3, word: "Sniffle", label: "Neutral", prepositions: "into, through (e.g., sniffle into a tissue)", definition: "To weep lightly while sniffing repeatedly.", example: "Suffering from both allergies and a sad movie, she sniffled into a paper tissue." },
+            { level: 4, word: "Well up", label: "Pleasant", prepositions: "in, with (e.g., tears well up in her eyes)", definition: "To have tears rise gently and genuinely into one's eyes from poignant emotion.", example: "Tears began to well up in his eyes as he watched his daughter walk down the aisle." },
+            { level: 5, word: "Tear up (joy)", label: "Positive", prepositions: "at, with (e.g., tear up with pride and gratitude)", definition: "To shed spontaneous tears of overwhelming gratitude, tenderness, or pure happiness.", example: "She teared up with gratitude when the entire theater stood to applaud her comeback performance." }
+          ]
+        },
+        {
+          verb: "Write",
+          elevated: [
+            { word: "Compose", definition: "Craft and author coherent, elegant prose or poetry." },
+            { word: "Inscribe", definition: "Carve, engrave, or solemnly write words into a surface." },
+            { word: "Pen", definition: "Write or author with literary artistry and purpose." }
+          ],
+          connotations: [
+            { level: 1, word: "Scrawl", label: "Negative", prepositions: "on, across (e.g., scrawl a signature on a receipt)", definition: "To write in a hurried, careless, uncoordinated, or messy manner.", example: "The doctor scrawled an illegible signature at the bottom of the prescription slip." },
+            { level: 2, word: "Scribble", label: "Unflattering", prepositions: "down, on, in (e.g., scribble directions on a napkin)", definition: "To write or draw hastily and untidily without neatness.", example: "He scribbled directions on a crumpled napkin while waiting at the traffic light." },
+            { level: 3, word: "Draft", label: "Neutral", prepositions: "for, with (e.g., draft a legal argument for court)", definition: "To prepare a preliminary version of a text or piece of writing.", example: "The legal team worked through the night to draft the opening arguments for the trial." },
+            { level: 4, word: "Compose", label: "Pleasant", prepositions: "of, for (e.g., compose a sweeping historical novel)", definition: "To deliberately author and craft elegant, coherent prose or verse.", example: "She spent years composing a sweeping historical novel set along the Mediterranean coast." },
+            { level: 5, word: "Pen", label: "Positive", prepositions: "to, for (e.g., pen a treatise on global peace)", definition: "To write or compose with distinguished literary artistry, ink, and style.", example: "The Nobel laureate penned an impassioned essay advocating for global literacy and peace." }
+          ]
+        }
+      ],
+
+      idioms: [
+        { tier: "Foundations", phrase: "Hold your horses", meaning: "Wait; be patient; slow down.", example: "Hold your horses before you sign that lease—make sure you read the terms carefully." },
+        { tier: "Foundations", phrase: "All the bells and whistles", meaning: "Every extra feature or embellishment included.", example: "Their flagship smartphone was released with all the bells and whistles imaginable." },
+        { tier: "Foundations", phrase: "Bite the bullet", meaning: "Face a difficult or unpleasant situation with courage.", example: "He finally bit the bullet and scheduled the root canal appointment he had postponed for months." },
+        { tier: "Foundations", phrase: "Cut corners", meaning: "Do something in the cheapest or easiest way, often sacrificing quality.", example: "When constructing a suspension bridge, you cannot afford to cut corners on steel quality." },
+        { tier: "Foundations", phrase: "Get the ball rolling", meaning: "Start a process or activity.", example: "Let's schedule a kickoff brainstorm this morning to get the ball rolling on the marketing campaign." },
+        { tier: "Foundations", phrase: "Hit the nail on the head", meaning: "Describe exactly what is causing a situation or problem.", example: "Her diagnosis hit the nail on the head regarding why our website conversion rates had plummeted." },
+        { tier: "Foundations", phrase: "Once in a blue moon", meaning: "Very rarely.", example: "Because of his demanding travel schedule, we only get to meet once in a blue moon." },
+        { tier: "Foundations", phrase: "Speak of the devil", meaning: "Said when a person who was just mentioned unexpectedly appears.", example: "We were just talking about how well Sarah did in London, and speak of the devil, here she comes!" },
+        { tier: "Foundations", phrase: "The best of both worlds", meaning: "A situation combining the advantages of two different things.", example: "Working remotely while living in a peaceful countryside villa gave her the best of both worlds." },
+        { tier: "Foundations", phrase: "Under the weather", meaning: "Feeling slightly unwell.", example: "I will have to decline dinner tonight as I have been feeling a bit under the weather." },
+        { tier: "Foundations", phrase: "Add fuel to the fire", meaning: "Make a bad situation worse.", example: "Arguing with the angry referee will only add fuel to the fire and earn a penalty." },
+        { tier: "Foundations", phrase: "Beat around the bush", meaning: "Avoid getting to the point of an issue.", example: "Stop beating around the bush and tell us directly whether the budget was approved." },
+        { tier: "Foundations", phrase: "Break the ice", meaning: "Say or do something to relieve tension or initiate conversation.", example: "The facilitator opened the workshop with a lighthearted trivia game to break the ice." },
+        { tier: "Foundations", phrase: "Call it a day", meaning: "Stop working on something for the rest of the day.", example: "We have made excellent progress on the revisions, so let's pack up and call it a day." },
+        { tier: "Foundations", phrase: "Cross that bridge when we come to it", meaning: "Deal with a problem only when it actually arises.", example: "Let's focus on finishing prototype testing first and cross that bridge when we come to it." },
+        { tier: "C1-C2 Advanced", phrase: "Jump on the bandwagon", meaning: "Join others in doing something popular or fashionable.", example: "Many legacy retail brands rushed to jump on the bandwagon by launching mobile loyalty apps." },
+        { tier: "C1-C2 Advanced", phrase: "Let the cat out of the bag", meaning: "Reveal a secret, often accidentally.", example: "David let the cat out of the bag regarding the surprise anniversary party during breakfast." },
+        { tier: "C1-C2 Advanced", phrase: "Piece of cake", meaning: "Something very easy to do.", example: "After preparing thoroughly for six weeks, she found the certification exam to be a piece of cake." },
+        { tier: "C1-C2 Advanced", phrase: "Actions speak louder than words", meaning: "What people do matters more than what they say.", example: "Corporate pledges mean little without tangible emissions reductions; actions speak louder than words." },
+        { tier: "C1-C2 Advanced", phrase: "Barking up the wrong tree", meaning: "Pursuing a mistaken course of action or line of reasoning.", example: "If you think changing the font will resolve our software bugs, you are barking up the wrong tree." },
+        { tier: "C1-C2 Advanced", phrase: "Burn the midnight oil", meaning: "Work late into the night.", example: "The legal defense team had to burn the midnight oil to review thousands of discovery documents." },
+        { tier: "C1-C2 Advanced", phrase: "Cost an arm and a leg", meaning: "Be very expensive.", example: "Replacing the cracked windshield on the imported vintage car cost an arm and a leg." },
+        { tier: "C1-C2 Advanced", phrase: "Get cold feet", meaning: "Become nervous and hesitant about a planned action, often before it happens.", example: "Moments before stepping onto the high-dive board, the young swimmer got cold feet." },
+        { tier: "C1-C2 Advanced", phrase: "Go the extra mile", meaning: "Make more effort than is expected.", example: "The customer support agent went the extra mile by tracking down the missing shipment personally." },
+        { tier: "C1-C2 Advanced", phrase: "Keep something at bay", meaning: "Prevent something unwanted from approaching or affecting you.", example: "Eating a nutrient-rich diet and sleeping well helps keep winter infections at bay." }
+      ]
+    };
+
+    VOCABULARY_TOOLKIT.verbs.forEach(v => {
+      if (!v.synonyms && v.elevated) v.synonyms = v.elevated;
+      if (!v.elevated && v.synonyms) v.elevated = v.synonyms;
+    });
+
+    let currentRoundNumber = 1;
+    let totalScore = 0;
+    let roundsPlayed = 0;
+    let activePartTab = 1;
+    let currentQuestion = null;
+    let lastEvaluationData = null;
+    let currentAskAIContext = null;
+
+    let completedParts = { 1: false, 2: false, 3: false };
+    let hintsRevealed = { 1: false, 2: false, 3: false };
+    let examplesRevealed = { 1: false, 2: false, 3: false };
+    let prepositionsRevealed = { 1: false, 2: false };
+    let soundEnabled = true;
+    let synth = null;
+
+    // 3-Round Anti-Repetition Tracking Queues
+    let recentP1Words = [];
+    let recentP2Words = [];
+    let recentP3Idioms = [];
+
+    let skippedQuestions = {
+      p1_meaning: false,
+      p1_intensity: false,
+      p1_sentence: false,
+      p2_meaning: false,
+      p2_connotation: false,
+      p2_sentence: false,
+      p3_meaning: false,
+      p3_sentence: false
+    };
+
+    function addSafeListener(id, event, handler) {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener(event, handler);
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        if (!synth && window.Tone) {
+          synth = new Tone.Synth().toDestination();
+        }
+        if (window.Tone && Tone.context && Tone.context.state !== 'running') {
+          Tone.start();
+        }
+        if (synth) {
+          const now = Tone.now();
+          if (type === 'click') synth.triggerAttackRelease('C5', '0.04', now);
+          else if (type === 'level') synth.triggerAttackRelease('E5', '0.07', now);
+          else if (type === 'success') synth.triggerAttackRelease('G5', '0.12', now);
+          else if (type === 'celebrate') synth.triggerAttackRelease('C6', '0.2', now);
+        }
+      } catch (e) {}
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('soundIcon');
+      if (soundEnabled) {
+        if (icon) icon.className = 'fa-solid fa-volume-high text-xs';
+        showToast('Sound enabled', 'info');
+      } else {
+        if (icon) icon.className = 'fa-solid fa-volume-xmark text-xs';
+        showToast('Sound muted', 'info');
+      }
+    }
+
+    function speakText(text) {
+      if (!text || !('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
+        console.warn('Speech error:', e);
+      }
+    }
+
+    function speakCurrentWord(partNum) {
+      if (!currentQuestion) return;
+      if (partNum === 1 && currentQuestion.emotionSynonym) speakText(currentQuestion.emotionSynonym.word);
+      else if (partNum === 2 && currentQuestion.verbSynonym) speakText(currentQuestion.verbSynonym.word);
+      else if (partNum === 3 && currentQuestion.idiom) speakText(currentQuestion.idiom.phrase);
+    }
+
+    function getLevelLabel(level) {
+      switch(level) {
+        case 1: return "Mild";
+        case 2: return "Moderate";
+        case 3: return "Marked";
+        case 4: return "Elevated";
+        case 5: return "Intense";
+        default: return "";
+      }
+    }
+
+    function getConnotationLabel(level) {
+      switch(level) {
+        case 1: return "Negative";
+        case 2: return "Unflattering";
+        case 3: return "Neutral";
+        case 4: return "Pleasant";
+        case 5: return "Positive";
+        default: return "";
+      }
+    }
+
+    function generateRoundQuestion() {
+      // 1. Pick Part 1 synonym avoiding words from last 3 rounds
+      const allP1Levels = [];
+      VOCABULARY_TOOLKIT.emotionsAndTraits.forEach(emo => {
+        emo.levels.forEach(lvl => {
+          allP1Levels.push({
+            category: emo.category || 'Emotion',
+            emotion: emo.emotion,
+            ...lvl
+          });
+        });
+      });
+
+      let candidateP1 = allP1Levels.filter(item => !recentP1Words.includes(item.word.toLowerCase()));
+      if (candidateP1.length === 0) {
+        recentP1Words = [];
+        candidateP1 = allP1Levels;
+      }
+      const chosenP1 = candidateP1[Math.floor(Math.random() * candidateP1.length)];
+      recentP1Words.push(chosenP1.word.toLowerCase());
+      if (recentP1Words.length > 3) recentP1Words.shift();
+
+      // 2. Pick Part 2 verb synonym avoiding words from last 3 rounds
+      const allP2Connotations = [];
+      VOCABULARY_TOOLKIT.verbs.forEach(v => {
+        v.connotations.forEach(c => {
+          allP2Connotations.push({
+            plainVerb: v.verb,
+            ...c
+          });
+        });
+      });
+
+      let candidateP2 = allP2Connotations.filter(c => !recentP2Words.includes(c.word.toLowerCase()));
+      if (candidateP2.length === 0) {
+        recentP2Words = [];
+        candidateP2 = allP2Connotations;
+      }
+      const chosenP2 = candidateP2[Math.floor(Math.random() * candidateP2.length)];
+      recentP2Words.push(chosenP2.word.toLowerCase());
+      if (recentP2Words.length > 3) recentP2Words.shift();
+
+      // 3. Pick Part 3 idiom avoiding idioms from last 3 rounds
+      let candidateP3 = VOCABULARY_TOOLKIT.idioms.filter(idm => !recentP3Idioms.includes(idm.phrase.toLowerCase()));
+      if (candidateP3.length === 0) {
+        recentP3Idioms = [];
+        candidateP3 = VOCABULARY_TOOLKIT.idioms;
+      }
+      const chosenP3 = candidateP3[Math.floor(Math.random() * candidateP3.length)];
+      recentP3Idioms.push(chosenP3.phrase.toLowerCase());
+      if (recentP3Idioms.length > 3) recentP3Idioms.shift();
+
+      return {
+        emotionSynonym: {
+          category: chosenP1.category,
+          word: chosenP1.word,
+          intensity: chosenP1.level,
+          emotion: chosenP1.emotion,
+          definition: chosenP1.definition,
+          prepositions: chosenP1.prepositions || "with, about, at",
+          example: chosenP1.example
+        },
+        verbSynonym: {
+          word: chosenP2.word,
+          plainVerb: chosenP2.plainVerb,
+          definition: chosenP2.definition,
+          connotationLevel: chosenP2.level,
+          connotationLabel: chosenP2.label,
+          prepositions: chosenP2.prepositions || "through, along, with",
+          example: chosenP2.example
+        },
+        idiom: {
+          tier: chosenP3.tier,
+          phrase: chosenP3.phrase,
+          meaning: chosenP3.meaning,
+          example: chosenP3.example
+        }
+      };
+    }
+
+    function renderQuestion(q) {
+      currentQuestion = q;
+      completedParts = { 1: false, 2: false, 3: false };
+      hintsRevealed = { 1: false, 2: false, 3: false };
+      examplesRevealed = { 1: false, 2: false, 3: false };
+      prepositionsRevealed = { 1: false, 2: false };
+
+      skippedQuestions = {
+        p1_meaning: false,
+        p1_intensity: false,
+        p1_sentence: false,
+        p2_meaning: false,
+        p2_connotation: false,
+        p2_sentence: false,
+        p3_meaning: false,
+        p3_sentence: false
+      };
+
+      Object.keys(skippedQuestions).forEach(k => {
+        const btn = document.getElementById(`btnSkip_${k}`);
+        const notice = document.getElementById(`skipNotice_${k}`);
+        if (btn) {
+          btn.className = "px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition";
+          btn.innerHTML = `<i class="fa-solid fa-forward text-[9px]"></i><span>Skip</span>`;
+        }
+        if (notice) notice.classList.add('hidden');
+      });
+
+      ['inputP1Meaning', 'inputP1Sentence', 'inputP2Meaning', 'inputP2Sentence', 'inputP3Meaning', 'inputP3Sentence'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = false;
+      });
+
+      const intCont = document.getElementById('intensityButtonsContainer');
+      if (intCont) intCont.classList.remove('opacity-40');
+      const conCont = document.getElementById('connotationButtonsContainer');
+      if (conCont) conCont.classList.remove('opacity-40');
+
+      resetHintButtons();
+      resetExampleBoxes();
+      resetPrepositionBoxes();
+
+      const roundStat = document.getElementById('statRound');
+      if (roundStat) roundStat.innerText = currentRoundNumber;
+
+      ['inputP1Meaning', 'inputP1Intensity', 'inputP1Sentence', 'inputP2Meaning', 'inputP2Connotation', 'inputP2Sentence', 'inputP3Meaning', 'inputP3Sentence'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+
+      document.querySelectorAll('.intensity-btn').forEach(btn => {
+        btn.classList.remove('bg-purple-600', 'text-white', 'border-purple-400', 'shadow-md');
+        btn.classList.add('bg-slate-800', 'text-slate-200', 'border-slate-700');
+      });
+
+      document.querySelectorAll('.connotation-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-400', 'shadow-md');
+        btn.classList.add('bg-slate-800', 'text-slate-200', 'border-slate-700');
+      });
+
+      // Part 1 Text Bindings
+      document.getElementById('p1WordDisplay').innerText = q.emotionSynonym.word;
+      document.getElementById('labelP1Synonym1').innerText = q.emotionSynonym.word;
+      document.getElementById('labelP1Synonym2').innerText = q.emotionSynonym.word;
+      document.getElementById('labelP1Synonym3').innerText = q.emotionSynonym.word;
+      document.getElementById('exampleTextP1').innerText = `"${q.emotionSynonym.example}"`;
+      document.getElementById('prepTextP1').innerText = q.emotionSynonym.prepositions;
+
+      // Part 2 Text Bindings
+      document.getElementById('p2WordDisplay').innerText = q.verbSynonym.word;
+      document.getElementById('labelP2Synonym1').innerText = q.verbSynonym.word;
+      document.getElementById('labelP2SynonymConnotation').innerText = q.verbSynonym.word;
+      document.getElementById('labelP2Synonym2').innerText = q.verbSynonym.word;
+      document.getElementById('exampleTextP2').innerText = `"${q.verbSynonym.example}"`;
+      document.getElementById('prepTextP2').innerText = q.verbSynonym.prepositions;
+
+      // Part 3 Text Bindings
+      document.getElementById('p3WordDisplay').innerText = `"${q.idiom.phrase}"`;
+      document.getElementById('p3TierLabel').innerText = q.idiom.tier;
+      document.getElementById('labelP3Idiom1').innerText = `"${q.idiom.phrase}"`;
+      document.getElementById('labelP3Idiom2').innerText = `"${q.idiom.phrase}"`;
+      document.getElementById('exampleTextP3').innerText = `"${q.idiom.example}"`;
+
+      updatePartBadges();
+      switchPartTab(1);
+
+      document.getElementById('resultsSection').classList.add('hidden');
+      document.getElementById('quizContainer').classList.remove('hidden');
+    }
+
+    function resetHintButtons() {
+      const iconP1 = document.getElementById('hintIconP1');
+      const containerP1 = document.getElementById('hintContainerP1');
+      if (iconP1 && containerP1) {
+        iconP1.className = 'fa-solid fa-eye text-xs';
+        containerP1.innerHTML = 'Reveal Root';
+      }
+
+      const iconP2 = document.getElementById('hintIconP2');
+      const containerP2 = document.getElementById('hintContainerP2');
+      if (iconP2 && containerP2) {
+        iconP2.className = 'fa-solid fa-eye text-xs';
+        containerP2.innerHTML = 'Reveal Plain Verb';
+      }
+
+      const iconP3 = document.getElementById('hintIconP3');
+      const containerP3 = document.getElementById('hintContainerP3');
+      if (iconP3 && containerP3) {
+        iconP3.className = 'fa-solid fa-eye text-xs';
+        containerP3.innerHTML = 'Reveal Meaning';
+      }
+    }
+
+    function resetExampleBoxes() {
+      for (let i = 1; i <= 3; i++) {
+        const box = document.getElementById(`exampleBoxP${i}`);
+        const label = document.getElementById(`exampleContainerP${i}`);
+        if (box) box.classList.add('hidden');
+        if (label) label.innerText = 'Example';
+      }
+    }
+
+    function resetPrepositionBoxes() {
+      for (let i = 1; i <= 2; i++) {
+        const box = document.getElementById(`prepBoxP${i}`);
+        const label = document.getElementById(`prepContainerP${i}`);
+        if (box) box.classList.add('hidden');
+        if (label) label.innerText = 'Prepositions';
+      }
+    }
+
+    function toggleHint(partNum) {
+      playSound('click');
+      hintsRevealed[partNum] = !hintsRevealed[partNum];
+      const isRevealed = hintsRevealed[partNum];
+
+      if (partNum === 1) {
+        const icon = document.getElementById('hintIconP1');
+        const container = document.getElementById('hintContainerP1');
+        if (isRevealed) {
+          if (icon) icon.className = 'fa-solid fa-eye-slash text-purple-300 text-xs';
+          if (container) container.innerHTML = `Root: <strong class="text-white ml-1">${currentQuestion.emotionSynonym.emotion}</strong>`;
+          showToast(`Root revealed: ${currentQuestion.emotionSynonym.emotion}`, 'info');
+        } else {
+          if (icon) icon.className = 'fa-solid fa-eye text-xs';
+          if (container) container.innerHTML = 'Reveal Root';
+        }
+      } else if (partNum === 2) {
+        const icon = document.getElementById('hintIconP2');
+        const container = document.getElementById('hintContainerP2');
+        if (isRevealed) {
+          if (icon) icon.className = 'fa-solid fa-eye-slash text-blue-300 text-xs';
+          if (container) container.innerHTML = `Verb: <strong class="text-white ml-1">${currentQuestion.verbSynonym.plainVerb}</strong>`;
+          showToast(`Plain verb: "${currentQuestion.verbSynonym.plainVerb}"`, 'info');
+        } else {
+          if (icon) icon.className = 'fa-solid fa-eye text-xs';
+          if (container) container.innerHTML = 'Reveal Plain Verb';
+        }
+      } else if (partNum === 3) {
+        const icon = document.getElementById('hintIconP3');
+        const container = document.getElementById('hintContainerP3');
+        if (isRevealed) {
+          if (icon) icon.className = 'fa-solid fa-eye-slash text-amber-300 text-xs';
+          if (container) container.innerHTML = `Meaning: <span class="text-white font-normal ml-1 italic">${currentQuestion.idiom.meaning}</span>`;
+          showToast(`Idiom meaning revealed`, 'info');
+        } else {
+          if (icon) icon.className = 'fa-solid fa-eye text-xs';
+          if (container) container.innerHTML = 'Reveal Meaning';
+        }
+      }
+    }
+
+    function toggleExample(partNum) {
+      playSound('click');
+      examplesRevealed[partNum] = !examplesRevealed[partNum];
+      const isRevealed = examplesRevealed[partNum];
+      const box = document.getElementById(`exampleBoxP${partNum}`);
+      const label = document.getElementById(`exampleContainerP${partNum}`);
+
+      if (isRevealed) {
+        if (box) box.classList.remove('hidden');
+        if (label) label.innerText = 'Hide Ex.';
+        showToast('Example context revealed', 'info');
+      } else {
+        if (box) box.classList.add('hidden');
+        if (label) label.innerText = 'Example';
+      }
+    }
+
+    function togglePrepositions(partNum) {
+      playSound('click');
+      prepositionsRevealed[partNum] = !prepositionsRevealed[partNum];
+      const isRevealed = prepositionsRevealed[partNum];
+      const box = document.getElementById(`prepBoxP${partNum}`);
+      const label = document.getElementById(`prepContainerP${partNum}`);
+
+      if (isRevealed) {
+        if (box) box.classList.remove('hidden');
+        if (label) label.innerText = 'Hide Prep.';
+        showToast('Prepositions revealed', 'info');
+      } else {
+        if (box) box.classList.add('hidden');
+        if (label) label.innerText = 'Prepositions';
+      }
+    }
+
+    function toggleSkip(qKey) {
+      playSound('click');
+      skippedQuestions[qKey] = !skippedQuestions[qKey];
+      const isSkipped = skippedQuestions[qKey];
+
+      const btn = document.getElementById(`btnSkip_${qKey}`);
+      const notice = document.getElementById(`skipNotice_${qKey}`);
+
+      if (btn) {
+        if (isSkipped) {
+          btn.className = "px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-amber-500/20 text-amber-300 border border-amber-500/40 active:scale-95 transition shadow-sm";
+          btn.innerHTML = `<i class="fa-solid fa-rotate-left text-[9px]"></i><span>Undo</span>`;
+          showToast('Question skipped', 'info');
+        } else {
+          btn.className = "px-2 py-1 rounded-lg text-[10px] font-semibold flex items-center gap-1 bg-slate-800 text-slate-400 hover:text-amber-300 border border-slate-700 active:scale-95 transition";
+          btn.innerHTML = `<i class="fa-solid fa-forward text-[9px]"></i><span>Skip</span>`;
+          showToast('Question restored', 'info');
+        }
+      }
+
+      if (notice) {
+        if (isSkipped) notice.classList.remove('hidden');
+        else notice.classList.add('hidden');
+      }
+
+      if (qKey === 'p1_meaning') {
+        const el = document.getElementById('inputP1Meaning');
+        if (el) el.disabled = isSkipped;
+      } else if (qKey === 'p1_intensity') {
+        const container = document.getElementById('intensityButtonsContainer');
+        if (container) container.classList.toggle('opacity-40', isSkipped);
+      } else if (qKey === 'p1_sentence') {
+        const el = document.getElementById('inputP1Sentence');
+        if (el) el.disabled = isSkipped;
+      } else if (qKey === 'p2_meaning') {
+        const el = document.getElementById('inputP2Meaning');
+        if (el) el.disabled = isSkipped;
+      } else if (qKey === 'p2_connotation') {
+        const container = document.getElementById('connotationButtonsContainer');
+        if (container) container.classList.toggle('opacity-40', isSkipped);
+      } else if (qKey === 'p2_sentence') {
+        const el = document.getElementById('inputP2Sentence');
+        if (el) el.disabled = isSkipped;
+      } else if (qKey === 'p3_meaning') {
+        const el = document.getElementById('inputP3Meaning');
+        if (el) el.disabled = isSkipped;
+      } else if (qKey === 'p3_sentence') {
+        const el = document.getElementById('inputP3Sentence');
+        if (el) el.disabled = isSkipped;
+      }
+
+      checkPartCompletion();
+    }
+
+    function selectIntensity(level) {
+      playSound('level');
+      if (skippedQuestions.p1_intensity) toggleSkip('p1_intensity');
+      const input = document.getElementById('inputP1Intensity');
+      if (input) input.value = level;
+      
+      document.querySelectorAll('.intensity-btn').forEach(btn => {
+        const val = parseInt(btn.getAttribute('data-val'), 10);
+        if (val === level) {
+          btn.classList.remove('bg-slate-800', 'text-slate-200', 'border-slate-700');
+          btn.classList.add('bg-purple-600', 'text-white', 'border-purple-400', 'shadow-md');
+        } else {
+          btn.classList.remove('bg-purple-600', 'text-white', 'border-purple-400', 'shadow-md');
+          btn.classList.add('bg-slate-800', 'text-slate-200', 'border-slate-700');
+        }
+      });
+      checkPartCompletion();
+    }
+
+    function selectConnotation(level) {
+      playSound('level');
+      if (skippedQuestions.p2_connotation) toggleSkip('p2_connotation');
+      const input = document.getElementById('inputP2Connotation');
+      if (input) input.value = level;
+      
+      document.querySelectorAll('.connotation-btn').forEach(btn => {
+        const val = parseInt(btn.getAttribute('data-cval'), 10);
+        if (val === level) {
+          btn.classList.remove('bg-slate-800', 'text-slate-200', 'border-slate-700');
+          btn.classList.add('bg-blue-600', 'text-white', 'border-blue-400', 'shadow-md');
+        } else {
+          btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-400', 'shadow-md');
+          btn.classList.add('bg-slate-800', 'text-slate-200', 'border-slate-700');
+        }
+      });
+      checkPartCompletion();
+    }
+
+    function checkPartCompletion() {
+      const p1M = document.getElementById('inputP1Meaning')?.value.trim() || '';
+      const p1I = document.getElementById('inputP1Intensity')?.value.trim() || '';
+      const p1S = document.getElementById('inputP1Sentence')?.value.trim() || '';
+      const p1M_done = (p1M.length > 2) || skippedQuestions.p1_meaning;
+      const p1I_done = (p1I !== '') || skippedQuestions.p1_intensity;
+      const p1S_done = (p1S.length > 4) || skippedQuestions.p1_sentence;
+      completedParts[1] = (p1M_done && p1I_done && p1S_done);
+
+      const p2M = document.getElementById('inputP2Meaning')?.value.trim() || '';
+      const p2C = document.getElementById('inputP2Connotation')?.value.trim() || '';
+      const p2S = document.getElementById('inputP2Sentence')?.value.trim() || '';
+      const p2M_done = (p2M.length > 2) || skippedQuestions.p2_meaning;
+      const p2C_done = (p2C !== '') || skippedQuestions.p2_connotation;
+      const p2S_done = (p2S.length > 4) || skippedQuestions.p2_sentence;
+      completedParts[2] = (p2M_done && p2C_done && p2S_done);
+
+      const p3M = document.getElementById('inputP3Meaning')?.value.trim() || '';
+      const p3S = document.getElementById('inputP3Sentence')?.value.trim() || '';
+      const p3M_done = (p3M.length > 2) || skippedQuestions.p3_meaning;
+      const p3S_done = (p3S.length > 4) || skippedQuestions.p3_sentence;
+      completedParts[3] = (p3M_done && p3S_done);
+
+      updatePartBadges();
+    }
+
+    function updatePartBadges() {
+      for (let i = 1; i <= 3; i++) {
+        const badge = document.getElementById(`badgeP${i}`);
+        if (badge) {
+          if (completedParts[i]) badge.classList.remove('hidden');
+          else badge.classList.add('hidden');
+        }
+      }
+    }
+
+    ['inputP1Meaning', 'inputP1Sentence', 'inputP2Meaning', 'inputP2Sentence', 'inputP3Meaning', 'inputP3Sentence'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', checkPartCompletion);
+    });
+
+    function switchPartTab(partNum) {
+      playSound('click');
+      activePartTab = partNum;
+
+      document.getElementById('part1Section')?.classList.add('hidden');
+      document.getElementById('part2Section')?.classList.add('hidden');
+      document.getElementById('part3Section')?.classList.add('hidden');
+
+      for (let i = 1; i <= 3; i++) {
+        const tab = document.getElementById(`tabPart${i}`);
+        if (tab) {
+          if (i === partNum) {
+            tab.className = "py-2 px-1 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition bg-indigo-600 text-white shadow";
+          } else {
+            tab.className = "py-2 px-1 rounded-lg text-xs font-semibold flex items-center justify-center gap-1 transition bg-transparent text-slate-400 hover:text-white";
+          }
+        }
+      }
+
+      document.getElementById(`part${partNum}Section`)?.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToNextPart(targetPart) {
+      switchPartTab(targetPart);
+    }
+
+    function analyzeGrammarMistakes(text, targetWord = '') {
+      if (!text || text.trim().length === 0) return null;
+      const trimmed = text.trim();
+      const mistakes = [];
+      let corrected = trimmed;
+
+      // 1. Check capitalization
+      if (/^[a-z]/.test(trimmed)) {
+        mistakes.push("Missing leading capital letter at sentence start.");
+        corrected = corrected.charAt(0).toUpperCase() + corrected.slice(1);
+      }
+
+      // 2. Check terminal punctuation
+      if (!/[.!?]$/.test(trimmed)) {
+        mistakes.push("Sentence lacks terminal punctuation (period, question mark, or exclamation point).");
+        corrected = corrected + '.';
+      }
+
+      // 3. Check common typos / grammar patterns
+      if (/\bi\b/.test(corrected)) {
+        mistakes.push("Standalone pronoun 'i' must always be capitalized as 'I'.");
+        corrected = corrected.replace(/\bi\b/g, 'I');
+      }
+
+      if (/\bteh\b/i.test(corrected)) {
+        mistakes.push("Spelling error: 'teh' should be 'the'.");
+        corrected = corrected.replace(/\bteh\b/gi, 'the');
+      }
+
+      if (/\bdoesnt\b/i.test(corrected)) {
+        mistakes.push("Missing apostrophe: 'doesnt' should be 'doesn't'.");
+        corrected = corrected.replace(/\bdoesnt\b/gi, "doesn't");
+      }
+
+      if (/\bdont\b/i.test(corrected)) {
+        mistakes.push("Missing apostrophe: 'dont' should be 'don't'.");
+        corrected = corrected.replace(/\bdont\b/gi, "don't");
+      }
+
+      if (targetWord && !corrected.toLowerCase().includes(targetWord.toLowerCase())) {
+        mistakes.push(`Target word "${targetWord}" was not directly incorporated in the sentence.`);
+      }
+
+      if (mistakes.length === 0) return null;
+      return {
+        mistakes: mistakes,
+        corrected: corrected,
+        explanation: mistakes.join(" ")
+      };
+    }
+
+    async function submitCurrentRound() {
+      checkPartCompletion();
+
+      const p1M = document.getElementById('inputP1Meaning')?.value.trim() || '';
+      const p1I = document.getElementById('inputP1Intensity')?.value.trim() || '';
+      const p1S = document.getElementById('inputP1Sentence')?.value.trim() || '';
+
+      const p2M = document.getElementById('inputP2Meaning')?.value.trim() || '';
+      const p2C = document.getElementById('inputP2Connotation')?.value.trim() || '';
+      const p2S = document.getElementById('inputP2Sentence')?.value.trim() || '';
+
+      const p3M = document.getElementById('inputP3Meaning')?.value.trim() || '';
+      const p3S = document.getElementById('inputP3Sentence')?.value.trim() || '';
+
+      const p1_ok = (p1M.length > 0 || skippedQuestions.p1_meaning) && 
+                    (p1I !== '' || skippedQuestions.p1_intensity) && 
+                    (p1S.length > 0 || skippedQuestions.p1_sentence);
+      if (!p1_ok) {
+        showToast('Please answer or skip all questions in Part 1.', 'warning');
+        switchPartTab(1);
+        return;
+      }
+
+      const p2_ok = (p2M.length > 0 || skippedQuestions.p2_meaning) && 
+                    (p2C !== '' || skippedQuestions.p2_connotation) && 
+                    (p2S.length > 0 || skippedQuestions.p2_sentence);
+      if (!p2_ok) {
+        showToast('Please answer or skip all questions in Part 2.', 'warning');
+        switchPartTab(2);
+        return;
+      }
+
+      const p3_ok = (p3M.length > 0 || skippedQuestions.p3_meaning) && 
+                    (p3S.length > 0 || skippedQuestions.p3_sentence);
+      if (!p3_ok) {
+        showToast('Please answer or skip all questions in Part 3.', 'warning');
+        switchPartTab(3);
+        return;
+      }
+
+      document.getElementById('evaluatingOverlay')?.classList.remove('hidden');
+      playSound('click');
+
+      const evaluationInput = {
+        skipped: { ...skippedQuestions },
+        part1: {
+          targetWord: currentQuestion.emotionSynonym.word,
+          category: currentQuestion.emotionSynonym.category,
+          emotion: currentQuestion.emotionSynonym.emotion,
+          canonicalIntensity: currentQuestion.emotionSynonym.intensity,
+          userMeaning: p1M,
+          userIntensity: p1I ? parseInt(p1I, 10) : null,
+          userSentence: p1S,
+          toolkitDefinition: currentQuestion.emotionSynonym.definition,
+          toolkitExample: currentQuestion.emotionSynonym.example
+        },
+        part2: {
+          targetWord: currentQuestion.verbSynonym.word,
+          plainVerb: currentQuestion.verbSynonym.plainVerb,
+          canonicalConnotation: currentQuestion.verbSynonym.connotationLevel,
+          connotationLabel: currentQuestion.verbSynonym.connotationLabel,
+          userMeaning: p2M,
+          userConnotation: p2C ? parseInt(p2C, 10) : null,
+          userSentence: p2S,
+          toolkitDefinition: currentQuestion.verbSynonym.definition,
+          toolkitExample: currentQuestion.verbSynonym.example
+        },
+        part3: {
+          targetIdiom: currentQuestion.idiom.phrase,
+          tier: currentQuestion.idiom.tier,
+          canonicalMeaning: currentQuestion.idiom.meaning,
+          toolkitExample: currentQuestion.idiom.example,
+          userMeaning: p3M,
+          userSentence: p3S
+        }
+      };
+
+      try {
+        const evaluationResult = await gradeWithGemini(evaluationInput);
+        displayEvaluationResults(evaluationResult);
+      } catch (err) {
+        console.warn('Using local examiner heuristic:', err);
+        const fallbackResult = localHeuristicGrade(evaluationInput);
+        displayEvaluationResults(fallbackResult);
+      } finally {
+        document.getElementById('evaluatingOverlay')?.classList.add('hidden');
+      }
+    }
+
+    async function gradeWithGemini(data) {
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+      const systemPrompt = `You are a supportive, high-level lexicographer grading student answers on vocabulary, intensity, connotation, and grammar.
+Check for any spelling, capitalization, preposition, or grammar mistakes in the user's answers.
+Return ONLY valid JSON matching this schema:
+{
+  "part1": {
+    "meaningScore": (0-100 number),
+    "meaningFeedback": (assessment),
+    "meaningGrammar": {"hasMistake": boolean, "corrected": string, "explanation": string},
+    "intensityCorrect": boolean,
+    "intensityFeedback": string,
+    "sentenceScore": (0-100 number),
+    "sentenceFeedback": string,
+    "sentenceGrammar": {"hasMistake": boolean, "corrected": string, "explanation": string}
+  },
+  "part2": {
+    "meaningScore": (0-100 number),
+    "meaningFeedback": string,
+    "meaningGrammar": {"hasMistake": boolean, "corrected": string, "explanation": string},
+    "connotationCorrect": boolean,
+    "connotationFeedback": string,
+    "sentenceScore": (0-100 number),
+    "sentenceFeedback": string,
+    "sentenceGrammar": {"hasMistake": boolean, "corrected": string, "explanation": string}
+  },
+  "part3": {
+    "meaningScore": (0-100 number),
+    "meaningFeedback": string,
+    "meaningGrammar": {"hasMistake": boolean, "corrected": string, "explanation": string},
+    "sentenceScore": (0-100 number),
+    "sentenceFeedback": string,
+    "sentenceGrammar": {"hasMistake": boolean, "corrected": string, "explanation": string}
+  },
+  "overallScore": (0-100 number),
+  "overallComment": string
+}`;
+
+      const userPrompt = `Grade student answers:
+Part 1 Word: "${data.part1.targetWord}" (${data.part1.category}: ${data.part1.emotion}, Level ${data.part1.canonicalIntensity}/5)
+- User Meaning: ${data.skipped.p1_meaning ? "[SKIPPED]" : `"${data.part1.userMeaning}"`}
+- User Intensity: ${data.skipped.p1_intensity ? "[SKIPPED]" : data.part1.userIntensity}
+- User Sentence: ${data.skipped.p1_sentence ? "[SKIPPED]" : `"${data.part1.userSentence}"`}
+
+Part 2 Verb: "${data.part2.targetWord}" (Base: "${data.part2.plainVerb}", Connotation ${data.part2.canonicalConnotation}/5 [${data.part2.connotationLabel}])
+- User Meaning: ${data.skipped.p2_meaning ? "[SKIPPED]" : `"${data.part2.userMeaning}"`}
+- User Connotation: ${data.skipped.p2_connotation ? "[SKIPPED]" : data.part2.userConnotation}
+- User Sentence: ${data.skipped.p2_sentence ? "[SKIPPED]" : `"${data.part2.userSentence}"`}
+
+Part 3 Idiom: "${data.part3.targetIdiom}" (${data.part3.tier}, Meaning: "${data.part3.canonicalMeaning}")
+- User Meaning: ${data.skipped.p3_meaning ? "[SKIPPED]" : `"${data.part3.userMeaning}"`}
+- User Sentence: ${data.skipped.p3_sentence ? "[SKIPPED]" : `"${data.part3.userSentence}"`}`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: { responseMimeType: "application/json" }
+      };
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error(`Gemini status ${response.status}`);
+      const result = await response.json();
+      const rawText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!rawText) throw new Error("Empty candidate received");
+
+      return JSON.parse(rawText);
+    }
+
+    function localHeuristicGrade(data) {
+      const isIntensityExact = data.part1.userIntensity === data.part1.canonicalIntensity;
+      const intensityDiff = data.part1.userIntensity !== null ? Math.abs(data.part1.userIntensity - data.part1.canonicalIntensity) : 5;
+      const p1MeaningLen = data.part1.userMeaning ? data.part1.userMeaning.length : 0;
+      const p1MScore = data.skipped.p1_meaning ? 0 : Math.min(100, Math.max(65, 70 + (p1MeaningLen > 15 ? 25 : 10)));
+      const intensityScore = data.skipped.p1_intensity ? 0 : (isIntensityExact ? 100 : (intensityDiff === 1 ? 65 : 30));
+      const hasP1Word = data.part1.userSentence ? data.part1.userSentence.toLowerCase().includes(data.part1.targetWord.toLowerCase()) : false;
+      const p1SScore = data.skipped.p1_sentence ? 0 : (hasP1Word ? 95 : 65);
+
+      const isConnotationExact = data.part2.userConnotation === data.part2.canonicalConnotation;
+      const connotationDiff = data.part2.userConnotation !== null ? Math.abs(data.part2.userConnotation - data.part2.canonicalConnotation) : 5;
+      const p2MeaningLen = data.part2.userMeaning ? data.part2.userMeaning.length : 0;
+      const p2MScore = data.skipped.p2_meaning ? 0 : Math.min(100, Math.max(65, 72 + (p2MeaningLen > 15 ? 23 : 8)));
+      const connotationScore = data.skipped.p2_connotation ? 0 : (isConnotationExact ? 100 : (connotationDiff === 1 ? 65 : 30));
+      const hasP2Word = data.part2.userSentence ? data.part2.userSentence.toLowerCase().includes(data.part2.targetWord.toLowerCase()) : false;
+      const p2SScore = data.skipped.p2_sentence ? 0 : (hasP2Word ? 95 : 65);
+
+      const p3MeaningLen = data.part3.userMeaning ? data.part3.userMeaning.length : 0;
+      const p3MScore = data.skipped.p3_meaning ? 0 : Math.min(100, Math.max(65, 75 + (p3MeaningLen > 15 ? 20 : 5)));
+      const hasP3Word = data.part3.userSentence ? data.part3.userSentence.toLowerCase().includes(data.part3.targetIdiom.toLowerCase().substring(0, 5)) : false;
+      const p3SScore = data.skipped.p3_sentence ? 0 : (hasP3Word ? 95 : 75);
+
+      let answeredScores = [];
+      if (!data.skipped.p1_meaning) answeredScores.push(p1MScore);
+      if (!data.skipped.p1_intensity) answeredScores.push(intensityScore);
+      if (!data.skipped.p1_sentence) answeredScores.push(p1SScore);
+      if (!data.skipped.p2_meaning) answeredScores.push(p2MScore);
+      if (!data.skipped.p2_connotation) answeredScores.push(connotationScore);
+      if (!data.skipped.p2_sentence) answeredScores.push(p2SScore);
+      if (!data.skipped.p3_meaning) answeredScores.push(p3MScore);
+      if (!data.skipped.p3_sentence) answeredScores.push(p3SScore);
+
+      const overall = answeredScores.length > 0 ? Math.round(answeredScores.reduce((a, b) => a + b, 0) / answeredScores.length) : 0;
+
+      // Check grammar on sentence and meaning answers
+      const p1MGrammar = data.skipped.p1_meaning ? null : analyzeGrammarMistakes(data.part1.userMeaning);
+      const p1SGrammar = data.skipped.p1_sentence ? null : analyzeGrammarMistakes(data.part1.userSentence, data.part1.targetWord);
+      const p2MGrammar = data.skipped.p2_meaning ? null : analyzeGrammarMistakes(data.part2.userMeaning);
+      const p2SGrammar = data.skipped.p2_sentence ? null : analyzeGrammarMistakes(data.part2.userSentence, data.part2.targetWord);
+      const p3MGrammar = data.skipped.p3_meaning ? null : analyzeGrammarMistakes(data.part3.userMeaning);
+      const p3SGrammar = data.skipped.p3_sentence ? null : analyzeGrammarMistakes(data.part3.userSentence, data.part3.targetIdiom);
+
+      return {
+        part1: {
+          meaningScore: p1MScore,
+          meaningFeedback: data.skipped.p1_meaning ? "Skipped by user." : `Definition captures "${data.part1.targetWord}".`,
+          meaningGrammar: p1MGrammar ? { hasMistake: true, corrected: p1MGrammar.corrected, explanation: p1MGrammar.explanation } : { hasMistake: false },
+          intensityCorrect: isIntensityExact,
+          intensityFeedback: data.skipped.p1_intensity ? `Skipped. Level ${data.part1.canonicalIntensity}.` : (isIntensityExact ? `Exact match! Level ${data.part1.canonicalIntensity}.` : `Level ${data.part1.canonicalIntensity} (${getLevelLabel(data.part1.canonicalIntensity)}).`),
+          sentenceScore: p1SScore,
+          sentenceFeedback: data.skipped.p1_sentence ? "Skipped by user." : (hasP1Word ? `Contextual sentence using "${data.part1.targetWord}".` : `Include "${data.part1.targetWord}" directly.`),
+          sentenceGrammar: p1SGrammar ? { hasMistake: true, corrected: p1SGrammar.corrected, explanation: p1SGrammar.explanation } : { hasMistake: false }
+        },
+        part2: {
+          meaningScore: p2MScore,
+          meaningFeedback: data.skipped.p2_meaning ? "Skipped by user." : `Clear definition of "${data.part2.targetWord}".`,
+          meaningGrammar: p2MGrammar ? { hasMistake: true, corrected: p2MGrammar.corrected, explanation: p2MGrammar.explanation } : { hasMistake: false },
+          connotationCorrect: isConnotationExact,
+          connotationFeedback: data.skipped.p2_connotation ? `Skipped. Level ${data.part2.canonicalConnotation}.` : (isConnotationExact ? `Correct! Level ${data.part2.canonicalConnotation} (${data.part2.connotationLabel}).` : `Ranked Level ${data.part2.canonicalConnotation} (${data.part2.connotationLabel}).`),
+          sentenceScore: p2SScore,
+          sentenceFeedback: data.skipped.p2_sentence ? "Skipped by user." : (hasP2Word ? `Natural verb usage.` : `Include the verb "${data.part2.targetWord}".`),
+          sentenceGrammar: p2SGrammar ? { hasMistake: true, corrected: p2SGrammar.corrected, explanation: p2SGrammar.explanation } : { hasMistake: false }
+        },
+        part3: {
+          meaningScore: p3MScore,
+          meaningFeedback: data.skipped.p3_meaning ? "Skipped by user." : `Clear explanation of idiom meaning.`,
+          meaningGrammar: p3MGrammar ? { hasMistake: true, corrected: p3MGrammar.corrected, explanation: p3MGrammar.explanation } : { hasMistake: false },
+          sentenceScore: p3SScore,
+          sentenceFeedback: data.skipped.p3_sentence ? "Skipped by user." : `Natural idiomatic phrasing.`,
+          sentenceGrammar: p3SGrammar ? { hasMistake: true, corrected: p3SGrammar.corrected, explanation: p3SGrammar.explanation } : { hasMistake: false }
+        },
+        overallScore: overall,
+        overallComment: answeredScores.length === 0
+          ? "All questions skipped this round. Review solutions and model sentences below!"
+          : (overall >= 85 ? "Great mastery! Nuanced grasp of intensity, connotation, and grammar." : "Solid attempt! Refer to the toolkit guide and grammar feedback below.")
+      };
+    }
+
+    function renderGrammarFeedbackBox(boxId, grammarObj) {
+      const el = document.getElementById(boxId);
+      if (!el) return;
+      if (grammarObj && grammarObj.hasMistake) {
+        el.classList.remove('hidden');
+        el.innerHTML = `
+          <div class="flex items-start gap-1.5">
+            <i class="fa-solid fa-pen-nib text-rose-400 text-xs mt-0.5 shrink-0"></i>
+            <div>
+              <strong class="text-rose-300 block">Grammar / Syntax Correction:</strong>
+              <span class="text-slate-300 block mt-0.5">${grammarObj.explanation}</span>
+              <div class="mt-1 p-1.5 rounded bg-slate-900/90 border border-slate-800 text-slate-100 font-mono text-[10px]">
+                <span class="text-emerald-400 font-semibold">Suggested:</span> "${grammarObj.corrected}"
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        el.classList.add('hidden');
+        el.innerHTML = '';
+      }
+    }
+
+    function displayEvaluationResults(evalData) {
+      lastEvaluationData = evalData;
+
+      document.getElementById('part1Section')?.classList.add('hidden');
+      document.getElementById('part2Section')?.classList.add('hidden');
+      document.getElementById('part3Section')?.classList.add('hidden');
+      document.getElementById('resultsSection')?.classList.remove('hidden');
+
+      roundsPlayed++;
+      const roundOverall = evalData.overallScore || 0;
+      totalScore += roundOverall;
+      const statScore = document.getElementById('statScore');
+      if (statScore) statScore.innerText = totalScore;
+      const statAcc = document.getElementById('statAccuracy');
+      if (statAcc) statAcc.innerText = `${Math.round(totalScore / roundsPlayed)}%`;
+
+      const scoreBadge = document.getElementById('resultsScoreBadge');
+      if (scoreBadge) {
+        scoreBadge.innerText = `${roundOverall}/100`;
+        if (roundOverall >= 85) {
+          scoreBadge.className = "text-sm font-sans font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+          playSound('celebrate');
+        } else if (roundOverall >= 60) {
+          scoreBadge.className = "text-sm font-sans font-bold px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30";
+          playSound('success');
+        } else {
+          scoreBadge.className = "text-sm font-sans font-bold px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30";
+          playSound('click');
+        }
+      }
+
+      const overallFeedback = document.getElementById('resultsOverallFeedback');
+      if (overallFeedback) overallFeedback.innerText = evalData.overallComment;
+
+      // User Answers Display: Part 1
+      const p1MInput = document.getElementById('inputP1Meaning')?.value.trim() || '';
+      const p1IInput = document.getElementById('inputP1Intensity')?.value || '';
+      const p1SInput = document.getElementById('inputP1Sentence')?.value.trim() || '';
+
+      const resP1UserM = document.getElementById('resP1UserMeaning');
+      if (resP1UserM) resP1UserM.innerText = skippedQuestions.p1_meaning ? "[Skipped by user]" : (p1MInput || "(No answer entered)");
+
+      const resP1UserI = document.getElementById('resP1UserIntensity');
+      if (resP1UserI) resP1UserI.innerText = skippedQuestions.p1_intensity ? "[Skipped by user]" : (p1IInput ? `Level ${p1IInput} (${getLevelLabel(parseInt(p1IInput, 10))})` : "(None selected)");
+
+      const resP1UserS = document.getElementById('resP1UserSentence');
+      if (resP1UserS) resP1UserS.innerText = skippedQuestions.p1_sentence ? "[Skipped by user]" : (p1SInput || "(No answer entered)");
+
+      renderGrammarFeedbackBox('resP1GrammarMeaning', evalData.part1.meaningGrammar);
+      renderGrammarFeedbackBox('resP1GrammarSentence', evalData.part1.sentenceGrammar);
+
+      // User Answers Display: Part 2
+      const p2MInput = document.getElementById('inputP2Meaning')?.value.trim() || '';
+      const p2CInput = document.getElementById('inputP2Connotation')?.value || '';
+      const p2SInput = document.getElementById('inputP2Sentence')?.value.trim() || '';
+
+      const resP2UserM = document.getElementById('resP2UserMeaning');
+      if (resP2UserM) resP2UserM.innerText = skippedQuestions.p2_meaning ? "[Skipped by user]" : (p2MInput || "(No answer entered)");
+
+      const resP2UserC = document.getElementById('resP2UserConnotation');
+      if (resP2UserC) resP2UserC.innerText = skippedQuestions.p2_connotation ? "[Skipped by user]" : (p2CInput ? `Level ${p2CInput} (${getConnotationLabel(parseInt(p2CInput, 10))})` : "(None selected)");
+
+      const resP2UserS = document.getElementById('resP2UserSentence');
+      if (resP2UserS) resP2UserS.innerText = skippedQuestions.p2_sentence ? "[Skipped by user]" : (p2SInput || "(No answer entered)");
+
+      renderGrammarFeedbackBox('resP2GrammarMeaning', evalData.part2.meaningGrammar);
+      renderGrammarFeedbackBox('resP2GrammarSentence', evalData.part2.sentenceGrammar);
+
+      // User Answers Display: Part 3
+      const p3MInput = document.getElementById('inputP3Meaning')?.value.trim() || '';
+      const p3SInput = document.getElementById('inputP3Sentence')?.value.trim() || '';
+
+      const resP3UserM = document.getElementById('resP3UserMeaning');
+      if (resP3UserM) resP3UserM.innerText = skippedQuestions.p3_meaning ? "[Skipped by user]" : (p3MInput || "(No answer entered)");
+
+      const resP3UserS = document.getElementById('resP3UserSentence');
+      if (resP3UserS) resP3UserS.innerText = skippedQuestions.p3_sentence ? "[Skipped by user]" : (p3SInput || "(No answer entered)");
+
+      renderGrammarFeedbackBox('resP3GrammarMeaning', evalData.part3.meaningGrammar);
+      renderGrammarFeedbackBox('resP3GrammarSentence', evalData.part3.sentenceGrammar);
+
+      // Feedback Text & Badges
+      const p1Avg = Math.round(((evalData.part1.meaningScore || 0) + (evalData.part1.intensityCorrect ? 100 : (skippedQuestions.p1_intensity ? 0 : 50)) + (evalData.part1.sentenceScore || 0)) / 3);
+      document.getElementById('scorePart1').innerText = `${p1Avg}%`;
+      document.getElementById('resP1Word').innerText = `${currentQuestion.emotionSynonym.word} (${currentQuestion.emotionSynonym.emotion})`;
+      document.getElementById('resP1MeaningFeedback').innerText = evalData.part1.meaningFeedback;
+
+      const intensityContainer = document.getElementById('resP1IntensityResult');
+      if (skippedQuestions.p1_intensity) {
+        intensityContainer.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30 mr-1">SKIPPED</span> <span class="text-purple-200">Answer: Level ${currentQuestion.emotionSynonym.intensity} (${getLevelLabel(currentQuestion.emotionSynonym.intensity)})</span>`;
+      } else if (evalData.part1.intensityCorrect) {
+        intensityContainer.innerHTML = `<span class="text-emerald-300 font-bold"><i class="fa-solid fa-check mr-1"></i> Level ${currentQuestion.emotionSynonym.intensity}</span> <span class="text-slate-400 text-[10px]">(${evalData.part1.intensityFeedback})</span>`;
+      } else {
+        intensityContainer.innerHTML = `<span class="text-rose-300 font-bold"><i class="fa-solid fa-xmark mr-1"></i> Level ${p1IInput}</span> <span class="text-slate-400 text-[10px]">(Canonical: Level ${currentQuestion.emotionSynonym.intensity})</span>`;
+      }
+
+      document.getElementById('resP1SentenceFeedback').innerText = evalData.part1.sentenceFeedback;
+      document.getElementById('resP1Reference').innerHTML = `<span class="text-purple-300 font-semibold">Model Sentence:</span> "${currentQuestion.emotionSynonym.example}"`;
+
+      const p2Avg = Math.round(((evalData.part2.meaningScore || 0) + (evalData.part2.connotationCorrect ? 100 : (skippedQuestions.p2_connotation ? 0 : 50)) + (evalData.part2.sentenceScore || 0)) / 3);
+      document.getElementById('scorePart2').innerText = `${p2Avg}%`;
+      document.getElementById('resP2Word').innerText = `${currentQuestion.verbSynonym.word} (Verb: ${currentQuestion.verbSynonym.plainVerb})`;
+      document.getElementById('resP2MeaningFeedback').innerText = evalData.part2.meaningFeedback;
+
+      const connotationContainer = document.getElementById('resP2ConnotationResult');
+      if (skippedQuestions.p2_connotation) {
+        connotationContainer.innerHTML = `<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold border border-amber-500/30 mr-1">SKIPPED</span> <span class="text-blue-200">Answer: Level ${currentQuestion.verbSynonym.connotationLevel} (${currentQuestion.verbSynonym.connotationLabel})</span>`;
+      } else if (evalData.part2.connotationCorrect) {
+        connotationContainer.innerHTML = `<span class="text-emerald-300 font-bold"><i class="fa-solid fa-check mr-1"></i> Level ${currentQuestion.verbSynonym.connotationLevel} (${currentQuestion.verbSynonym.connotationLabel})</span>`;
+      } else {
+        connotationContainer.innerHTML = `<span class="text-rose-300 font-bold"><i class="fa-solid fa-xmark mr-1"></i> Level ${p2CInput}</span> <span class="text-slate-400 text-[10px]">(Canonical: Level ${currentQuestion.verbSynonym.connotationLevel} - ${currentQuestion.verbSynonym.connotationLabel})</span>`;
+      }
+
+      document.getElementById('resP2SentenceFeedback').innerText = evalData.part2.sentenceFeedback;
+      document.getElementById('resP2Reference').innerHTML = `<span class="text-blue-300 font-semibold">Model Sentence:</span> "${currentQuestion.verbSynonym.example}"`;
+
+      const p3Avg = Math.round(((evalData.part3.meaningScore || 0) + (evalData.part3.sentenceScore || 0)) / 2);
+      document.getElementById('scorePart3').innerText = `${p3Avg}%`;
+      document.getElementById('resP3Word').innerText = `"${currentQuestion.idiom.phrase}" (${currentQuestion.idiom.tier})`;
+      document.getElementById('resP3MeaningFeedback').innerText = evalData.part3.meaningFeedback;
+      document.getElementById('resP3SentenceFeedback').innerText = evalData.part3.sentenceFeedback;
+      document.getElementById('resP3Reference').innerHTML = `<span class="text-amber-300 font-semibold">Model Sentence:</span> "${currentQuestion.idiom.example}"`;
+
+      // Build dedicated Skipped Questions Box
+      buildSkippedCardsBox();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function buildSkippedCardsBox() {
+      const skippedSection = document.getElementById('skippedQuestionsSection');
+      const skippedContainer = document.getElementById('skippedCardsContainer');
+      const skippedBadgeCount = document.getElementById('skippedBadgeCount');
+      if (!skippedSection || !skippedContainer) return;
+      skippedContainer.innerHTML = '';
+
+      let skippedItems = [];
+
+      if (skippedQuestions.p1_meaning) {
+        skippedItems.push({
+          tag: "Part 1.(a) &bull; Meaning",
+          word: currentQuestion.emotionSynonym.word,
+          type: "Definition",
+          answer: currentQuestion.emotionSynonym.definition,
+          sentence: currentQuestion.emotionSynonym.example
+        });
+      }
+      if (skippedQuestions.p1_intensity) {
+        skippedItems.push({
+          tag: "Part 1.(b) &bull; Intensity",
+          word: currentQuestion.emotionSynonym.word,
+          type: "Intensity Level",
+          answer: `Level ${currentQuestion.emotionSynonym.intensity} (${getLevelLabel(currentQuestion.emotionSynonym.intensity)}) &mdash; ${currentQuestion.emotionSynonym.emotion}`,
+          sentence: currentQuestion.emotionSynonym.example
+        });
+      }
+      if (skippedQuestions.p1_sentence) {
+        skippedItems.push({
+          tag: "Part 1.(c) &bull; Sentence",
+          word: currentQuestion.emotionSynonym.word,
+          type: "Sentence Usage",
+          answer: currentQuestion.emotionSynonym.definition,
+          sentence: currentQuestion.emotionSynonym.example
+        });
+      }
+
+      if (skippedQuestions.p2_meaning) {
+        skippedItems.push({
+          tag: "Part 2.(a) &bull; Meaning",
+          word: currentQuestion.verbSynonym.word,
+          type: "Definition",
+          answer: currentQuestion.verbSynonym.definition,
+          sentence: currentQuestion.verbSynonym.example
+        });
+      }
+      if (skippedQuestions.p2_connotation) {
+        skippedItems.push({
+          tag: "Part 2.(b) &bull; Connotation",
+          word: currentQuestion.verbSynonym.word,
+          type: "Connotation Spectrum",
+          answer: `Level ${currentQuestion.verbSynonym.connotationLevel} (${currentQuestion.verbSynonym.connotationLabel}) &mdash; Base: ${currentQuestion.verbSynonym.plainVerb}`,
+          sentence: currentQuestion.verbSynonym.example
+        });
+      }
+      if (skippedQuestions.p2_sentence) {
+        skippedItems.push({
+          tag: "Part 2.(c) &bull; Sentence",
+          word: currentQuestion.verbSynonym.word,
+          type: "Sentence Usage",
+          answer: currentQuestion.verbSynonym.definition,
+          sentence: currentQuestion.verbSynonym.example
+        });
+      }
+
+      if (skippedQuestions.p3_meaning) {
+        skippedItems.push({
+          tag: "Part 3.(a) &bull; Meaning",
+          word: currentQuestion.idiom.phrase,
+          type: "Meaning",
+          answer: currentQuestion.idiom.meaning,
+          sentence: currentQuestion.idiom.example
+        });
+      }
+      if (skippedQuestions.p3_sentence) {
+        skippedItems.push({
+          tag: "Part 3.(b) &bull; Sentence",
+          word: currentQuestion.idiom.phrase,
+          type: "Sentence Usage",
+          answer: currentQuestion.idiom.meaning,
+          sentence: currentQuestion.idiom.example
+        });
+      }
+
+      if (skippedItems.length > 0) {
+        skippedSection.classList.remove('hidden');
+        if (skippedBadgeCount) skippedBadgeCount.innerText = `${skippedItems.length} Skipped`;
+        
+        skippedItems.forEach(item => {
+          const card = document.createElement('div');
+          card.className = "p-3 rounded-xl bg-slate-900/95 border border-slate-700/80 space-y-1.5 text-xs shadow-md";
+          card.innerHTML = `
+            <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold border border-amber-500/30 uppercase">Skipped</span>
+                <span class="text-[10px] text-slate-400 font-medium">${item.tag}</span>
+              </div>
+              <strong class="text-white text-xs tracking-wide">${item.word}</strong>
+            </div>
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-0.5">Canonical Answer (${item.type}):</span>
+              <p class="text-slate-100 font-medium">${item.answer}</p>
+            </div>
+            <div class="pt-1.5 border-t border-slate-800/80">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-amber-300 block mb-0.5 flex items-center gap-1">
+                <i class="fa-solid fa-quote-left text-[9px]"></i> Model Sentence:
+              </span>
+              <p class="text-amber-100 italic bg-slate-950/90 p-2 rounded-lg border border-slate-800">"${item.sentence}"</p>
+            </div>
+          `;
+          skippedContainer.appendChild(card);
+        });
+      } else {
+        skippedSection.classList.add('hidden');
+      }
+    }
+
+    function openAskAI(questionKey) {
+      playSound('click');
+      currentAskAIContext = questionKey;
+      const modal = document.getElementById('askAIModal');
+      const tag = document.getElementById('askAIContextTag');
+      const details = document.getElementById('askAIContextDetails');
+      const responseCont = document.getElementById('aiResponseContainer');
+      const queryInput = document.getElementById('inputAskAIUserQuery');
+
+      if (queryInput) queryInput.value = '';
+      if (responseCont) responseCont.classList.add('hidden');
+
+      if (tag && details && currentQuestion) {
+        if (questionKey === 'part1_meaning') {
+          tag.innerText = "Part 1.(a) • Emotion Meaning";
+          details.innerText = `Word: "${currentQuestion.emotionSynonym.word}" (${currentQuestion.emotionSynonym.emotion}) | Definition: "${currentQuestion.emotionSynonym.definition}"`;
+        } else if (questionKey === 'part1_intensity') {
+          tag.innerText = "Part 1.(b) • Emotion Intensity";
+          details.innerText = `Word: "${currentQuestion.emotionSynonym.word}" | Intensity: Level ${currentQuestion.emotionSynonym.intensity}/5 (${getLevelLabel(currentQuestion.emotionSynonym.intensity)})`;
+        } else if (questionKey === 'part1_sentence') {
+          tag.innerText = "Part 1.(c) • Sentence Usage";
+          details.innerText = `Word: "${currentQuestion.emotionSynonym.word}" | Model: "${currentQuestion.emotionSynonym.example}"`;
+        } else if (questionKey === 'part2_meaning') {
+          tag.innerText = "Part 2.(a) • Verb Meaning";
+          details.innerText = `Verb: "${currentQuestion.verbSynonym.word}" (Base: ${currentQuestion.verbSynonym.plainVerb}) | Definition: "${currentQuestion.verbSynonym.definition}"`;
+        } else if (questionKey === 'part2_connotation') {
+          tag.innerText = "Part 2.(b) • Connotation Spectrum";
+          details.innerText = `Verb: "${currentQuestion.verbSynonym.word}" | Connotation: Level ${currentQuestion.verbSynonym.connotationLevel}/5 (${currentQuestion.verbSynonym.connotationLabel})`;
+        } else if (questionKey === 'part2_sentence') {
+          tag.innerText = "Part 2.(c) • Verb Sentence";
+          details.innerText = `Verb: "${currentQuestion.verbSynonym.word}" | Model: "${currentQuestion.verbSynonym.example}"`;
+        } else if (questionKey === 'part3_meaning') {
+          tag.innerText = "Part 3.(a) • Idiom Meaning";
+          details.innerText = `Idiom: "${currentQuestion.idiom.phrase}" | Meaning: "${currentQuestion.idiom.meaning}"`;
+        } else if (questionKey === 'part3_sentence') {
+          tag.innerText = "Part 3.(b) • Idiom Sentence";
+          details.innerText = `Idiom: "${currentQuestion.idiom.phrase}" | Model: "${currentQuestion.idiom.example}"`;
+        }
+      }
+
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeAskAIModal() {
+      playSound('click');
+      const modal = document.getElementById('askAIModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function askAIPresetPrompt(promptText) {
+      const input = document.getElementById('inputAskAIUserQuery');
+      if (input) input.value = promptText;
+      submitCustomAIQuery();
+    }
+
+    async function submitCustomAIQuery() {
+      const input = document.getElementById('inputAskAIUserQuery');
+      const query = input?.value.trim();
+      if (!query) {
+        showToast('Please type a question or select a prompt chip.', 'warning');
+        return;
+      }
+
+      const loader = document.getElementById('aiLoadingIndicator');
+      const respBox = document.getElementById('aiResponseContainer');
+      const respText = document.getElementById('aiResponseText');
+
+      if (loader) loader.classList.remove('hidden');
+      if (respBox) respBox.classList.add('hidden');
+
+      const apiKey = "";
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+      const contextSummary = document.getElementById('askAIContextDetails')?.innerText || '';
+      const prompt = `You are an expert English lexicographer and tutor.
+Target Context: ${contextSummary}
+Student's Question: "${query}"
+
+Provide a concise, engaging, and clear tutor explanation (2 to 4 sentences). Give examples if helpful.`;
+
+      try {
+        const payload = {
+          contents: [{ parts: [{ text: prompt }] }]
+        };
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error("API error");
+        const json = await response.json();
+        const text = json.candidates?.[0]?.content?.parts?.[0]?.text || "Unable to retrieve explanation.";
+        if (respText) respText.innerText = text;
+        if (respBox) respBox.classList.remove('hidden');
+      } catch (err) {
+        // Fallback intelligent offline tutor response
+        let fallback = `Regarding "${contextSummary}":\n"${query}"\n\nIn standard usage, this word is chosen for its elevated stylistic nuance. Note the prepositions it pairs with and maintain natural agreement in tense and voice.`;
+        if (query.includes('preposition')) {
+          const prepP1 = currentQuestion?.emotionSynonym?.prepositions;
+          const prepP2 = currentQuestion?.verbSynonym?.prepositions;
+          fallback = `Collocation tip: This word commonly governs ${prepP1 || prepP2 || 'with / of / at'}. For example: "${currentQuestion?.emotionSynonym?.example || currentQuestion?.verbSynonym?.example}"`;
+        }
+        if (respText) respText.innerText = fallback;
+        if (respBox) respBox.classList.remove('hidden');
+      } finally {
+        if (loader) loader.classList.add('hidden');
+      }
+    }
+
+    function startNewRound() {
+      playSound('click');
+      currentRoundNumber++;
+      const nextQ = generateRoundQuestion();
+      renderQuestion(nextQ);
+      showToast(`Round ${currentRoundNumber} started!`, 'info');
+    }
+
+    function reviewAnswers() {
+      document.getElementById('resultsSection')?.classList.add('hidden');
+      switchPartTab(1);
+    }
+
+    function populateReferenceLibrary() {
+      const emotionsContainer = document.getElementById('refEmotionsContainer');
+      if (emotionsContainer) {
+        emotionsContainer.innerHTML = '';
+        VOCABULARY_TOOLKIT.emotionsAndTraits.forEach(emo => {
+          const card = document.createElement('div');
+          card.className = "p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5";
+          
+          const isTrait = emo.category === "Character & Mindset";
+          const badgeColor = isTrait ? "bg-amber-500/20 text-amber-300 border-amber-500/30" : "bg-purple-500/20 text-purple-300 border-purple-500/30";
+          
+          const tiersHtml = (emo.levels || []).map(lvl => `
+            <div class="flex items-center justify-between py-1 border-b border-slate-800/60 last:border-0 text-[11px]">
+              <div class="flex items-center gap-1.5">
+                <span class="w-3.5 h-3.5 rounded-full ${isTrait ? 'bg-amber-500/20 text-amber-300' : 'bg-purple-500/20 text-purple-300'} text-[9px] flex items-center justify-center font-bold">${lvl.level}</span>
+                <strong class="text-slate-200">${lvl.word}</strong>
+              </div>
+              <span class="text-[10px] text-slate-400 text-right max-w-[170px] truncate" title="${lvl.definition}">${lvl.definition}</span>
+            </div>
+          `).join('');
+
+          card.innerHTML = `
+            <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+              <div>
+                <span class="text-[9px] font-bold px-1.5 py-0.5 rounded border ${badgeColor} mr-1">${emo.category || 'Emotion'}</span>
+                <h4 class="font-bold text-xs text-white inline">${emo.emotion}</h4>
+              </div>
+              <span class="text-[9px] text-slate-500">1 (mild) ➔ 5 (intense)</span>
+            </div>
+            <div>${tiersHtml}</div>
+          `;
+          emotionsContainer.appendChild(card);
+        });
+      }
+
+      const verbsContainer = document.getElementById('refVerbsContainer');
+      if (verbsContainer) {
+        verbsContainer.innerHTML = '';
+        VOCABULARY_TOOLKIT.verbs.forEach(v => {
+          const item = document.createElement('div');
+          item.className = "p-3 rounded-xl bg-slate-900 border border-slate-800 flex flex-col gap-2";
+          
+          const elevatedArr = v.elevated || v.synonyms || [];
+          const elevatedList = elevatedArr.map(s => {
+            const word = typeof s === 'string' ? s : s.word;
+            return `<span class="px-2 py-0.5 rounded bg-slate-950 text-blue-300 border border-slate-800 font-medium">${word}</span>`;
+          }).join('');
+
+          const connotationArr = v.connotations || [];
+          const connotationPills = connotationArr.map(c => `
+            <div class="p-1.5 rounded-lg bg-slate-950 border border-slate-800/80 text-[10px] flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="w-3.5 h-3.5 rounded-full ${c.level <= 2 ? 'bg-rose-500/20 text-rose-300' : (c.level === 3 ? 'bg-slate-800 text-slate-300' : 'bg-emerald-500/20 text-emerald-300')} text-[8px] flex items-center justify-center font-bold">${c.level}</span>
+                <span class="text-[8px] text-slate-500">${c.label || ''}</span>
+              </div>
+              <strong class="text-slate-200 mt-1">${c.word}</strong>
+            </div>
+          `).join('');
+
+          item.innerHTML = `
+            <div class="flex items-center justify-between border-b border-slate-800 pb-1">
+              <span class="font-bold text-white text-xs">Verb: ${v.verb}</span>
+              <div class="flex gap-1 text-[10px]">${elevatedList}</div>
+            </div>
+            <div class="grid grid-cols-5 gap-1">${connotationPills}</div>
+          `;
+          verbsContainer.appendChild(item);
+        });
+      }
+
+      const idiomsContainer = document.getElementById('refIdiomsContainer');
+      if (idiomsContainer) {
+        idiomsContainer.innerHTML = '';
+        VOCABULARY_TOOLKIT.idioms.forEach(idm => {
+          const row = document.createElement('div');
+          row.className = "p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs flex flex-col";
+          const isAdvanced = idm.tier === "C1-C2 Advanced";
+          const tierBadge = isAdvanced 
+            ? '<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold border border-amber-500/30">C1-C2</span>'
+            : '<span class="px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 text-[9px] font-bold border border-indigo-500/30">Found.</span>';
+
+          row.innerHTML = `
+            <div class="flex items-center justify-between mb-1">
+              <strong class="text-amber-300 text-xs">"${idm.phrase}"</strong>
+              ${tierBadge}
+            </div>
+            <p class="text-slate-300 text-[11px] leading-snug">${idm.meaning}</p>
+          `;
+          idiomsContainer.appendChild(row);
+        });
+      }
+    }
+
+    function switchRefTab(tab) {
+      playSound('click');
+      document.getElementById('refSectionEmotions')?.classList.add('hidden');
+      document.getElementById('refSectionVerbs')?.classList.add('hidden');
+      document.getElementById('refSectionIdioms')?.classList.add('hidden');
+
+      const tE = document.getElementById('refTabEmotions');
+      const tV = document.getElementById('refTabVerbs');
+      const tI = document.getElementById('refTabIdioms');
+      if (tE) tE.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 whitespace-nowrap";
+      if (tV) tV.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 whitespace-nowrap";
+      if (tI) tI.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 whitespace-nowrap";
+
+      if (tab === 'emotions') {
+        document.getElementById('refSectionEmotions')?.classList.remove('hidden');
+        if (tE) tE.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white whitespace-nowrap";
+      } else if (tab === 'verbs') {
+        document.getElementById('refSectionVerbs')?.classList.remove('hidden');
+        if (tV) tV.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white whitespace-nowrap";
+      } else if (tab === 'idioms') {
+        document.getElementById('refSectionIdioms')?.classList.remove('hidden');
+        if (tI) tI.className = "px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white whitespace-nowrap";
+      }
+    }
+
+    function closeReferenceModal() {
+      playSound('click');
+      document.getElementById('referenceModal')?.classList.add('hidden');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+      const toast = document.createElement('div');
+      
+      let borderCol = 'border-indigo-500/40';
+      let icon = 'fa-info-circle text-indigo-400';
+      if (type === 'warning') {
+        borderCol = 'border-amber-500/50';
+        icon = 'fa-triangle-exclamation text-amber-400';
+      } else if (type === 'success') {
+        borderCol = 'border-emerald-500/50';
+        icon = 'fa-check-circle text-emerald-400';
+      }
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl bg-slate-900/95 border ${borderCol} text-xs text-white shadow-2xl backdrop-blur-md transform transition-all duration-300 -translate-y-2 opacity-0`;
+      toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('-translate-y-2', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      addSafeListener('btnOpenReference', 'click', () => {
+        playSound('click');
+        document.getElementById('referenceModal')?.classList.remove('hidden');
+      });
+
+      addSafeListener('referenceModal', 'click', (e) => {
+        if (e.target.id === 'referenceModal') closeReferenceModal();
+      });
+
+      addSafeListener('askAIModal', 'click', (e) => {
+        if (e.target.id === 'askAIModal') closeAskAIModal();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeReferenceModal();
+          closeAskAIModal();
+        }
+      });
+
+      populateReferenceLibrary();
+      const firstQuestion = generateRoundQuestion();
+      renderQuestion(firstQuestion);
+    });
+  </script>
+</body>
+</html>
